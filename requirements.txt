@@ -1,0 +1,7 @@
+Django==1.8
+distribute==0.6.31
+django-bootstrap3==5.3.1
+django-extensions==1.5.2
+greenlet==0.4.5
+six==1.9.0
+wsgiref==0.1.2

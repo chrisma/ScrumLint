@@ -1,0 +1,24 @@
+{% extends 'bootstrap3/bootstrap3.html' %}
+
+{% load url from future %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+{% block bootstrap3_extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static "metricsapp/style.css" %}">
+{% endblock %}
+
+{% block bootstrap3_title %}
+ScrumLint
+{% endblock %}
+
+{% block bootstrap3_content %}
+    <div class="container">
+        <h1>{% block title %}(no title){% endblock %}</h1>
+
+        {% bootstrap_messages %}
+
+        {% block content %}(no content){% endblock %}
+    </div>
+
+{% endblock %}

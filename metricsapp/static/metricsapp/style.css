@@ -1,0 +1,46 @@
+/* http://jsfiddle.net/panchroma/3gYa3/ */
+.panel-heading .accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+    float: right;        /* adjust as needed */
+    color: grey;         /* adjust as needed */
+}
+.panel-heading .accordion-toggle.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+}
+
+/* metric scores*/
+span.metric-score {
+	font-weight: bold;
+}
+
+span.metric-name {
+	margin-left: 10px;
+}
+
+/* Make the whole header clickable */
+.panel-title a {
+    display: block;
+    padding: 10px 15px;
+    margin: -10px -15px;
+}
+
+/* Color header according to score*/
+.panel-heading.good{
+	background-color: lightgreen;
+}
+
+.panel-heading.ok{
+	/*background-color: lightblue;*/
+}
+
+.panel-heading.bad{
+	background-color: lightpink;
+}
+
+/* Colo trend arrows */
+span.glyphicon-arrow-up {
+	color: green;
+}
