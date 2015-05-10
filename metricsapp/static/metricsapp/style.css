@@ -40,7 +40,12 @@ span.metric-name {
 	background-color: lightpink;
 }
 
-/* Colo trend arrows */
+/* Color trend arrows */
 span.glyphicon-arrow-up {
 	color: green;
+}
+
+/* Charts */
+canvas#overall {
+    margin-top:15px;
 }
