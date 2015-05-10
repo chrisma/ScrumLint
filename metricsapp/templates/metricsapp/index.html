@@ -72,7 +72,7 @@
 
 <script type="text/javascript">
 	var data = {
-			labels: ['Sprint 1','Sprint 2','Sprint 3','Sprint 4'],
+			labels: {{ chart_overall_labels|safe }},
 			datasets: [
 					{
 							label: "Overall score",
@@ -82,7 +82,7 @@
 							pointStrokeColor: "#fff",
 							pointHighlightFill: "#fff",
 							pointHighlightStroke: "rgba(151,187,205,1)",
-							data: [65.5, 70.3, 87.2, {{ current_sprint_score|floatformat }}]
+							data: {{ chart_overall_data }}
 					}
 			]
 	};

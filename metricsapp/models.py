@@ -17,7 +17,8 @@ class Metric(models.Model):
 			metric_results = metric.get_results(sprint)
 			rating += metric_results['score'] * metric.severity
 			max_rating += 100 * metric.severity
-		return (rating/max_rating)*100
+		result = (rating/max_rating)*100
+		return round(result, 2) 
 
 	#Enables returning subclasses via select_subclasses()
 	objects = InheritanceManager()
