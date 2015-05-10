@@ -1,45 +1,53 @@
-daily_user_story_throughput = {
+jit_commits_1 = {
     "errors": [], 
     "results": [
         {
-            "columns": [
-                "Sprint", 
-                "Amount_Of_Issues", 
-                "Devs", 
-                "US_Per_Developer"
-            ], 
+            "columns": ["JITcommits","TotalCommits","Percentage"], 
             "data": [
                 {
-                    "row": [
-                        "Sprint 1", 
-                        18, 
-                        39, 
-                        0.46
-                    ]
-                }, 
+                    "row": [127,337,0.3768545994065282]
+                }
+            ]
+        }
+    ]
+}
+
+jit_commits_2 = {
+    "errors": [], 
+    "results": [
+        {
+            "columns": ["JITcommits","TotalCommits","Percentage"], 
+            "data": [
                 {
-                    "row": [
-                        "Sprint 2", 
-                        21, 
-                        39, 
-                        0.54
-                    ]
-                }, 
+                    "row": [98,757,0.12945838837516513]
+                }
+            ]
+        }
+    ]
+}
+
+jit_commits_3 = {
+    "errors": [], 
+    "results": [
+        {
+            "columns": ["JITcommits","TotalCommits","Percentage"], 
+            "data": [
                 {
-                    "row": [
-                        "Sprint 3", 
-                        39, 
-                        39, 
-                        1.0
-                    ]
-                }, 
+                    "row": [104, 1116, 0.0931899641577061]
+                }
+            ]
+        }
+    ]
+}
+
+jit_commits_4 = {
+    "errors": [], 
+    "results": [
+        {
+            "columns": ["JITcommits","TotalCommits","Percentage"], 
+            "data": [
                 {
-                    "row": [
-                        "Sprint 4", 
-                        94, 
-                        39, 
-                        2.41
-                    ]
+                    "row": [157, 1802, 0.08712541620421754]
                 }
             ]
         }
@@ -795,8 +803,11 @@ result_data = {
     'Well-stocked Backlog': well_stocked_becklog,
     'Never-ending Story': never_ending_story,
     'Just-In-Time Development': just_in_time_development,
+    'Just-In-Time Development Sprint 1': jit_commits_1,
+    'Just-In-Time Development Sprint 2': jit_commits_2,
+    'Just-In-Time Development Sprint 3': jit_commits_3,
+    'Just-In-Time Development Sprint 4': jit_commits_4,
     'Forgotten Ones': forgotten_ones,
-    'Daily User Story Throughput': daily_user_story_throughput,
     'Daily User Story Throughput Sprint 1': daily_user_story_throughput_sprint_1,
     'Daily User Story Throughput Sprint 2': daily_user_story_throughput_sprint_2,
     'Daily User Story Throughput Sprint 3': daily_user_story_throughput_sprint_3,

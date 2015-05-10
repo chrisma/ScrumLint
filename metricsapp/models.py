@@ -9,6 +9,16 @@ from metricsapp.settings import conf
 
 class Metric(models.Model):
 
+	@classmethod
+	def rate(cls, list_of_metrics, sprint):
+		rating = 0
+		max_rating = 0
+		for metric in list_of_metrics:
+			metric_results = metric.get_results(sprint)
+			rating += metric_results['score'] * metric.severity
+			max_rating += 100 * metric.severity
+		return (rating/max_rating)*100
+
 	#Enables returning subclasses via select_subclasses()
 	objects = InheritanceManager()
 
@@ -17,7 +27,6 @@ class Metric(models.Model):
 	explanation = models.TextField(blank=True)
 	query = models.CharField(max_length=2000)
 	endpoint = models.CharField(max_length=200)
-	score = models.FloatField(null=True, blank=True)
 	results = JSONField(null=True)
 	last_query = models.DateTimeField(null=True, blank=True)
 	HIGH = 1.5
@@ -46,24 +55,25 @@ class Metric(models.Model):
 		result['columns'] = data['columns']
 		return result
 
-	def _calculate_score(self):
+	def _calculate_score(self, *args, **kwargs):
 		return 50*self.severity
 
 	def run(self):
 		self.results = self._process(self._run_query())
-		self.score = self._calculate_score()
 		self.last_query = timezone.now()
 		self.save()
 
-	def score_rating(self):
-		if self.score >= 75:
+	def score_rating(self, score):
+		if score >= 75:
 			return 'good'
-		if self.score <= 25:
+		if score <= 25:
 			return 'bad'
 		return 'ok'
 
 	def get_results(self, *args, **kwargs):
-		return self.results
+		score = self._calculate_score()
+		rating = self.score_rating(score)
+		return {'data':self.results, 'score':score, 'rating':rating}
 
 
 class SprintMetric(Metric):
@@ -76,7 +86,6 @@ class SprintMetric(Metric):
 			results[sprint] = self._process(self._run_query(sprint))
 		self.results = results
 		self.last_query = timezone.now()
-		self.score = self._calculate_score()
 		self.save()
 
 	def get_results(self, sprint=conf.sprints[-1], *args, **kwargs):
@@ -85,7 +94,47 @@ class SprintMetric(Metric):
 			print('GOT A STRING, WANTED A DICT')
 		else:
 			results = self.results
-		return results[sprint]
+		score = self._calculate_score(sprint)
+		rating = self.score_rating(score)
+		return {'data':results[sprint], 'score':score, 'rating':rating}
 
 class DailyUserStoryThroughput(SprintMetric):
-	pass
+	def _calculate_score(self, sprint=conf.sprints[-1]):
+		SCORE_COLUMN = 'USperDev'
+		UPPER_BOUND = 10
+		LOWER_BOUND = 0.2
+		
+		if isinstance(self.results, str):
+			results = json.loads(self.results)
+			print('GOT A STRING, WANTED A DICT')
+		else:
+			results = self.results
+		results = results[sprint]
+		
+		score_index = results['columns'].index(SCORE_COLUMN)
+		value = results['rows'][0][score_index]
+		
+		if value > UPPER_BOUND or value < LOWER_BOUND:
+			return 25
+		r = 80 + (value*5)
+		return r if r<=100 else 100
+
+class JustInTimeDevelopment(SprintMetric):
+	def _calculate_score(self, sprint=conf.sprints[-1]):
+		SCORE_COLUMN = 'Percentage'
+		UPPER_BOUND = 0.3
+		
+		if isinstance(self.results, str):
+			results = json.loads(self.results)
+			print('GOT A STRING, WANTED A DICT')
+		else:
+			results = self.results
+		results = results[sprint]
+		
+		score_index = results['columns'].index(SCORE_COLUMN)
+		value = results['rows'][0][score_index]
+
+		if value > UPPER_BOUND:
+			return 20
+		r = 100 - (value*300)
+		return r if r >= 0 else 0
