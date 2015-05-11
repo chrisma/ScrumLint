@@ -33,7 +33,7 @@
 {% if metrics_list %}
 	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-		{% for metric in metrics_list %}
+		{% for metric in metrics_list|dictsort:"result.score" %}
 			<div class="panel panel-default">
 				<div class="panel-heading {{ metric.result.rating }}" role="tab" id="heading{{ forloop.counter }}">
 					<h4 class="panel-title">
