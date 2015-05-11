@@ -1,11 +1,12 @@
 import json
 from django.db import models
 from django.utils import timezone
-from metricsapp.data import result_data
+from ..data import result_data
 from jsonfield import JSONField
 from model_utils.managers import InheritanceManager
 
-from metricsapp.settings import conf
+from ..settings import conf
+
 
 class Metric(models.Model):
 
@@ -99,26 +100,6 @@ class SprintMetric(Metric):
 		rating = self.score_rating(score)
 		return {'data':results[sprint], 'score':score, 'rating':rating}
 
-class DailyUserStoryThroughput(SprintMetric):
-	def _calculate_score(self, sprint=conf.sprints[-1]):
-		SCORE_COLUMN = 'USperDev'
-		UPPER_BOUND = 10
-		LOWER_BOUND = 0.2
-		
-		if isinstance(self.results, str):
-			results = json.loads(self.results)
-			print('GOT A STRING, WANTED A DICT')
-		else:
-			results = self.results
-		results = results[sprint]
-		
-		score_index = results['columns'].index(SCORE_COLUMN)
-		value = results['rows'][0][score_index]
-		
-		if value > UPPER_BOUND or value < LOWER_BOUND:
-			return 25
-		r = 80 + (value*5)
-		return r if r<=100 else 100
 
 class JustInTimeDevelopment(SprintMetric):
 	def _calculate_score(self, sprint=conf.sprints[-1]):
