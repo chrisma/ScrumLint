@@ -9,5 +9,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for metric in Metric.objects.all().select_subclasses():
+            self.stdout.write('Running "{}"'.format(metric))
             metric.run()
-            self.stdout.write('Successfully ran "{}"'.format(metric))

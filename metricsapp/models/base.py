@@ -4,6 +4,7 @@ from django.utils import timezone
 from ..data import result_data
 from jsonfield import JSONField
 from model_utils.managers import InheritanceManager
+import requests
 
 from ..settings import conf
 
@@ -27,7 +28,7 @@ class Metric(models.Model):
 	name = models.CharField(max_length=50)
 	description = models.CharField(max_length=2000)
 	explanation = models.TextField(blank=True)
-	query = models.CharField(max_length=2000)
+	query = models.TextField()
 	endpoint = models.CharField(max_length=200)
 	results = JSONField(null=True)
 	last_query = models.DateTimeField(null=True, blank=True)
@@ -66,10 +67,12 @@ class Metric(models.Model):
 		self.save()
 
 	def score_rating(self, score):
-		if score >= 75:
-			return 'good'
 		if score <= 25:
 			return 'bad'
+		if score >= 80:
+			return 'good'
+		if score <= 60:
+			return 'improvement'
 		return 'ok'
 
 	def get_results(self, *args, **kwargs):
@@ -80,7 +83,18 @@ class Metric(models.Model):
 
 class SprintMetric(Metric):
 	def _run_query(self, sprint):
-		return result_data[self.name + ' ' + sprint]
+		url = 'http://192.168.30.196:7478/db/data/transaction/commit'
+		payload = {
+			"statements" : [ {
+				"statement" : self.query.format(sprint=sprint)
+			} ]
+		}
+		headers = {'Accept': 'application/json; charset=UTF-8', 'Content-Type': 'application/json'}
+		r = requests.post(url, data=json.dumps(payload), headers=headers)
+
+		print(sprint, r.text[:100])
+
+		return r.json()
 
 	def run(self):
 		results = {}

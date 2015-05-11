@@ -40,6 +40,10 @@ span.metric-name {
 	background-color: lightpink;
 }
 
+.panel-heading.improvement{
+    background-color: orange;
+}
+
 /* Color trend arrows */
 span.glyphicon-arrow-up {
 	color: green;
