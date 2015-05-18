@@ -8,6 +8,14 @@ import requests
 
 from ..settings import conf
 
+class Category(models.Model):
+	name = models.CharField(max_length=50)
+
+	def __str__(self):
+		return self.name
+
+	class Meta:
+		ordering = ('name',)
 
 class Metric(models.Model):
 
@@ -25,6 +33,7 @@ class Metric(models.Model):
 	#Enables returning subclasses via select_subclasses()
 	objects = InheritanceManager()
 
+	categories = models.ManyToManyField(Category)
 	name = models.CharField(max_length=50)
 	description = models.CharField(max_length=2000)
 	explanation = models.TextField(blank=True)

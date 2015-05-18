@@ -21,7 +21,7 @@
 
 <div class="jumbotron">
 	<h2><strong>ScrumLint score</strong> of <a href="https://github.com/hpi-swt2/event-und-raumplanung" target="_blank">event-und-raumplanung</a>:</h2>
-	<h1>{{ current_sprint_score|floatformat:2 }}<small>/100 <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></small></h1>
+	<h1>{{ current_sprint_score|floatformat:2 }}<small>/100</span></small></h1>
 	<div>
 		<canvas id="overall" width="100%" height="150px"></canvas>
 	</div>
@@ -30,20 +30,23 @@
 <div class="page-header">
 	<h1>Details <small>How the score is calculated</a></small></h1>
 </div>
-{% if metrics_list %}
+{% if categories_list %}
 	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-		{% for metric in metrics_list|dictsort:"result.score" %}
-			<div class="panel panel-default">
-				<div class="panel-heading {{ metric.result.rating }}" role="tab" id="heading{{ forloop.counter }}">
-					<h4 class="panel-title">
-						<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
-							<span class="metric-score">{{ metric.result.score|floatformat }}</span><small>/100</small> <span class="metric-name">{{ metric.obj.name }} <small>{{ metric.obj.description }}</small></span>
-						</a>
-					</h4>
-				</div>
-				<div id="collapse{{ forloop.counter }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ forloop.counter }}">
-					<div class="panel-body">
+		{% for container in categories_list %}
+			<p>{{ container.categories.name }}</p>
+
+			{% for metric in container.items|dictsort:"result.score" %}
+				<div class="panel panel-default">
+					<div class="panel-heading {{ metric.result.rating }}" role="tab" id="heading{{ forloop.counter }}">
+						<h4 class="panel-title">
+							<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
+								<span class="metric-score">{{ metric.result.score|floatformat }}</span><small>/100</small> <span class="metric-name">{{ metric.obj.name }} <small>{{ metric.obj.description }}</small></span>
+							</a>
+						</h4>
+					</div>
+					<div id="collapse{{ forloop.counter }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ forloop.counter }}">
+						<div class="panel-body">
 							<div class="well">{{ metric.obj.explanation }}</div>
 							<table class="table">
 								<tr>
@@ -60,9 +63,10 @@
 								{% endfor %}
 							</table>
 							<p>Time since last update: {{ metric.obj.last_query|timesince }}</p>
+						</div>
 					</div>
 				</div>
-			</div>
+			{% endfor %}
 		{% endfor %}
 
 	</div>
