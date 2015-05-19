@@ -19,8 +19,11 @@
 	</ul>
 </div>
 
-<div class="jumbotron">
-	<h2><strong>ScrumLint score</strong> of <a href="https://github.com/hpi-swt2/event-und-raumplanung" target="_blank">event-und-raumplanung</a>:</h2>
+<div class="jumbotron" id="score_keeper">
+	<h2><strong>ScrumLint score</strong> of <br><a href="https://github.com/hpi-swt2/event-und-raumplanung" target="_blank">event-und-raumplanung</a>:</h2>
+	<div id="radar_container">
+		<canvas id="radar" width="300px" height="300px"></canvas>
+	</div>
 	<h1>{{ current_sprint_score|floatformat:2 }}<small>/100</span></small></h1>
 	<div>
 		<canvas id="overall" width="100%" height="150px"></canvas>
@@ -33,19 +36,19 @@
 {% if categories_list %}
 	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-		{% for container in categories_list %}
-			<p>{{ container.categories.name }}</p>
+		{% for container in categories_list|dictsort:"score" %}
+			<h3>{{ container.categories.name }} <small>({{ container.score }})</small></h3>
 
 			{% for metric in container.items|dictsort:"result.score" %}
 				<div class="panel panel-default">
-					<div class="panel-heading {{ metric.result.rating }}" role="tab" id="heading{{ forloop.counter }}">
+					<div class="panel-heading {{ metric.result.rating }}" role="tab" id="heading{{ container.categories.name|slugify }}{{ forloop.counter }}">
 						<h4 class="panel-title">
-							<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
+							<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ container.categories.name|slugify }}{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ container.categories.name|slugify }}{{ forloop.counter }}">
 								<span class="metric-score">{{ metric.result.score|floatformat }}</span><small>/100</small> <span class="metric-name">{{ metric.obj.name }} <small>{{ metric.obj.description }}</small></span>
 							</a>
 						</h4>
 					</div>
-					<div id="collapse{{ forloop.counter }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ forloop.counter }}">
+					<div id="collapse{{ container.categories.name|slugify }}{{ forloop.counter }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ container.categories.name|slugify }}{{ forloop.counter }}">
 						<div class="panel-body">
 							<div class="well">{{ metric.obj.explanation }}</div>
 							<table class="table">
@@ -72,10 +75,10 @@
 	</div>
 {% else %}
 	<p>No metrics are available.</p>
-{% endif %}	  
+{% endif %}
 
 <script type="text/javascript">
-	var data = {
+	var line_data = {
 			labels: {{ chart_overall_labels|safe }},
 			datasets: [
 					{
@@ -91,17 +94,37 @@
 			]
 	};
 
-	var options = {
+	var line_options = {
 		bezierCurve : true,
 		datasetFill : true,
 		datasetStrokeWidth : 4,
 		maintainAspectRatio: false,
+		responsive: true
 	}
 
-	Chart.defaults.global.responsive = true;
+	// Chart.defaults.global.responsive = true;
 	// Get context with jQuery - using jQuery's .get() method.
-	var ctx = $("#overall").get(0).getContext("2d");
-	var myLineChart = new Chart(ctx).Line(data, options);
+	var line_ctx = $("#overall").get(0).getContext("2d");
+	var myLineChart = new Chart(line_ctx).Line(line_data, line_options);
+
+	var data = {
+		labels: {{ chart_radar_labels|safe }},
+		datasets: [
+			{
+				label: "Project score in detail",
+				fillColor: "rgba(151,187,205,0.2)",
+				strokeColor: "rgba(151,187,205,1)",
+				pointColor: "rgba(151,187,205,1)",
+				pointStrokeColor: "#fff",
+				pointHighlightFill: "#fff",
+				pointHighlightStroke: "rgba(151,187,205,1)",
+				data: {{ chart_radar_data }}
+			}
+		]
+	};
+
+	var radar_ctx = $("#radar").get(0).getContext("2d");
+	var myRadarChart = new Chart(radar_ctx).Radar(data);
 </script>
 
 {% endblock %}{# content#}

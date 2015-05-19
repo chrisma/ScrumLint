@@ -49,7 +49,19 @@ span.glyphicon-arrow-up {
 	color: green;
 }
 
+/* Jumbotron needs to be positioned relative,
+so that children can be position absolutely within it */
+#score_keeper {
+    position: relative;
+}
+
 /* Charts */
 canvas#overall {
     margin-top:15px;
+}
+
+#radar_container {
+    position: absolute;
+    top: 20px;
+    right: 10%;
 }

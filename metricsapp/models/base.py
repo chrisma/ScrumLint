@@ -11,6 +11,9 @@ from ..settings import conf
 class Category(models.Model):
 	name = models.CharField(max_length=50)
 
+	def rate(self, sprint):
+		return Metric.rate(self.metric_set.select_subclasses(), sprint)
+
 	def __str__(self):
 		return self.name
 
