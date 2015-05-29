@@ -94,7 +94,7 @@ class Metric(models.Model):
 
 
 class SprintMetric(Metric):
-	def _run_query(self, sprint):
+	def _run_query(self, sprint=None):
 		url = 'http://192.168.30.196:7478/db/data/transaction/commit'
 		payload = {
 			"statements" : [ {
