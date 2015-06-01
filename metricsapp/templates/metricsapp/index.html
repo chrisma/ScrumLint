@@ -12,7 +12,7 @@
 <div class="well menu">
 	<ul class="nav nav-pills">
 		{% for sprint in sprint_list %}
-			<li role="presentation" class="{% if current_sprint == sprint %}active{% endif %}"><a href="/sprint/{{ forloop.counter }}/team/{{ current_team.name }}">{{ sprint }}</a></li>
+			<li role="presentation" {% if current_sprint == sprint %}class="active"{% endif %}><a href="/sprint/{{ forloop.counter }}/team/{{ current_team.name }}">{{ sprint }}</a></li>
 		{% endfor %}
 	</ul>
 </div>
@@ -20,7 +20,7 @@
 <div class="well menu">
 	<ul class="nav nav-pills">
 		{% for team in team_list %}
-			<li role="presentation" class="{% if current_team.name == team.name %}active{% endif %}"><a href="/sprint/{{ current_sprint_index }}/team/{{ team.name }}" {% if current_team.name == team.name %}style="background-color: {{ team.label_color }}"{% endif %}>{{ team.name }}</a></li>
+			<li role="presentation" {% if current_team.name == team.name %}class="active"{% endif %}><a href="/sprint/{{ current_sprint_index }}/team/{{ team.name }}" {% if current_team.name == team.name %}style="background-color: {{ team.label_color }}"{% endif %}>{{ team.name }}</a></li>
 		{% endfor %}
 	</ul>
 </div>
