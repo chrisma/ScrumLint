@@ -99,7 +99,12 @@ class SprintMetric(Metric):
 		url = 'http://192.168.30.196:7478/db/data/transaction/commit'
 		payload = {
 			"statements" : [ {
-				"statement" : self.query.format(sprint=sprint, team=team['team_name'], label=team['label'])
+				"statement" : self.query.format(
+								sprint=sprint,
+								team=team['team_name'],
+								label=team['label'],
+								sprint_list=', '.join(["'"+s+"'" for s in conf.sprints])
+							  )
 			} ]
 		}
 		headers = {'Accept': 'application/json; charset=UTF-8', 'Content-Type': 'application/json'}
@@ -141,7 +146,11 @@ class SprintMetric(Metric):
 			results = self.results
 		results = results[sprint][team['name']]
 		
-		score_index = results['columns'].index(column)
+		try:
+			score_index = results['columns'].index(column)
+		except ValueError:
+			return None
+
 		rows = results['rows']
 		if rows:
 			value = rows[0][score_index]
