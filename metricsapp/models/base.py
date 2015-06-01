@@ -132,3 +132,19 @@ class SprintMetric(Metric):
 		score = self._calculate_score(sprint, team)
 		rating = self.score_rating(score)
 		return {'data':results[sprint][team['name']], 'score':score, 'rating':rating}
+
+	def get_value(self, sprint, team, column):
+		if isinstance(self.results, str):
+			results = json.loads(self.results)
+			print('GOT A STRING, WANTED A DICT')
+		else:
+			results = self.results
+		results = results[sprint][team['name']]
+		
+		score_index = results['columns'].index(column)
+		rows = results['rows']
+		if rows:
+			value = rows[0][score_index]
+		else:
+			value = None
+		return value
