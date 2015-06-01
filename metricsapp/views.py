@@ -15,10 +15,11 @@ def group_by(queryset, attrib):
 				result.append({attrib:ele, 'items':[element]})
 	return result
 
-def index(request, sprint_index):
+def index(request, sprint_index, team_name):
+	team = [team for team in conf.teams if team["name"] == team_name][0]
 	sprint_index = int(sprint_index)
 	sprint = conf.sprints[sprint_index-1]
-	all_metrics = Metric.objects.select_subclasses()
+	all_metrics = Metric.objects.filter(active=True).select_subclasses()
 	categories_list = group_by(all_metrics, 'categories')
 	chart_radar_labels = []
 	chart_radar_data = []
@@ -28,14 +29,15 @@ def index(request, sprint_index):
 		cat['score'] = score
 		chart_radar_data.append(score)
 		chart_radar_labels.append(cat['categories'].name)
-	# metrics_list = [{'obj': m, 'result': m.get_results(sprint)} for m in all_metrics]
 	sprint_scores = [Metric.rate(all_metrics, s) for s in conf.sprints[:sprint_index]]
 
 	context = {	
-		# 'metrics_list': metrics_list, 
 		'categories_list': categories_list, 
 		'current_sprint': sprint,
+		'current_sprint_index': sprint_index,
 		'sprint_list': conf.sprints,
+		'current_team': team,
+		'team_list': conf.teams,
 		'current_sprint_score': Metric.rate(all_metrics, sprint),
 		'chart_overall_labels': list(conf.sprints[:sprint_index]),
 		'chart_overall_data': sprint_scores,

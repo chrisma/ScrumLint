@@ -44,6 +44,7 @@ class Metric(models.Model):
 	endpoint = models.CharField(max_length=200)
 	results = JSONField(null=True)
 	last_query = models.DateTimeField(null=True, blank=True)
+	active = models.BooleanField(default=True)
 	HIGH = 1.5
 	NORMAL = 1.0
 	LOW = 0.5
