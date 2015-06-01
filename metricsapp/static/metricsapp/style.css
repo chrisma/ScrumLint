@@ -3,6 +3,10 @@
     padding: 0px;
 }
 
+#accordion {
+    margin-bottom: 50px;
+}
+
 /* http://jsfiddle.net/panchroma/3gYa3/ */
 .panel-heading .accordion-toggle:after {
     /* symbol for "opening" panels */
