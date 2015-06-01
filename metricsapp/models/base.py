@@ -62,15 +62,6 @@ class Metric(models.Model):
 	def _run_query(self):
 		return result_data[self.name]
 
-	def _process(self, query_data):
-		data = query_data['results'][0]
-		result = {}
-		result['rows'] = []
-		for row in data['data']:
-			result['rows'].append(row['row'])
-		result['columns'] = data['columns']
-		return result
-
 	def _calculate_score(self, *args, **kwargs):
 		return 50*self.severity
 
@@ -117,6 +108,15 @@ class SprintMetric(Metric):
 			print('ERROR:', errors)
 
 		return data
+
+	def _process(self, query_data):
+		data = query_data['results'][0]
+		result = {}
+		result['rows'] = []
+		for row in data['data']:
+			result['rows'].append(row['row'])
+		result['columns'] = data['columns']
+		return result
 
 	def run(self):
 		results = {}
