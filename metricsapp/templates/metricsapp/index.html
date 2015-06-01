@@ -45,12 +45,12 @@
 		{% for container in categories_list|dictsort:"score" %}
 			<h3>{{ container.categories.name }} <small>({{ container.score }})</small></h3>
 
-			{% for metric in container.items|dictsort:"result.score" %}
+			{% for metric in container.items|dictsort:"summary.score" %}
 				<div class="panel panel-default">
-					<div class="panel-heading {{ metric.result.rating }}" role="tab" id="heading{{ container.categories.name|slugify }}{{ forloop.counter }}">
+					<div class="panel-heading {{ metric.summary.rating }}" role="tab" id="heading{{ container.categories.name|slugify }}{{ forloop.counter }}">
 						<h4 class="panel-title">
 							<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ container.categories.name|slugify }}{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ container.categories.name|slugify }}{{ forloop.counter }}">
-								<span class="metric-score">{{ metric.result.score|floatformat }}</span><small>/100</small> <span class="metric-name">{{ metric.obj.name }} <small>{{ metric.obj.description }}</small></span>
+								<span class="metric-score">{{ metric.summary.score|floatformat }}</span><small>/100</small> <span class="metric-name">{{ metric.obj.name }} <small>{{ metric.obj.description }}</small></span>
 							</a>
 						</h4>
 					</div>
@@ -59,11 +59,11 @@
 							<div class="well">{{ metric.obj.explanation }}</div>
 							<table class="table">
 								<tr>
-									{% for header in metric.result.data.columns %}
+									{% for header in metric.summary.data.columns %}
 										<th>{{ header|un_underscore}}</th>
 									{% endfor %}
 								</tr>
-								{% for row in metric.result.data.rows %}
+								{% for row in metric.summary.data.rows %}
 									<tr>
 										{% for data in row %}
 											<td>{{ data|format_commit }}</td>

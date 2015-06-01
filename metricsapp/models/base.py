@@ -28,7 +28,7 @@ class Metric(models.Model):
 		rating = 0
 		max_rating = 0
 		for metric in list_of_metrics:
-			metric_results = metric.get_results(sprint, team)
+			metric_results = metric.summary(sprint, team)
 			rating += metric_results['score'] * metric.severity
 			max_rating += 100 * metric.severity
 		result = (rating/max_rating)*100
@@ -80,7 +80,7 @@ class Metric(models.Model):
 			return 'improvement'
 		return 'ok'
 
-	def get_results(self, *args, **kwargs):
+	def summary(self, *args, **kwargs):
 		score = self._calculate_score()
 		rating = self.score_rating(score)
 		return {'data':self.results, 'score':score, 'rating':rating}
@@ -137,7 +137,7 @@ class SprintMetric(Metric):
 			results = self.results
 		return results[sprint][team['name']]
 
-	def get_results(self, sprint, team, *args, **kwargs):
+	def summary(self, sprint, team, *args, **kwargs):
 		data = self._result_getter(sprint, team)
 		score = self._calculate_score(sprint, team)
 		rating = self.score_rating(score)
