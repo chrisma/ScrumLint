@@ -45,7 +45,7 @@
 		{% for container in categories_list|dictsort:"score" %}
 			<h3>{{ container.categories.name }} <small>({{ container.score }})</small></h3>
 
-			{% for metric in container.items|dictsort:"summary.score" %}
+			{% for metric in container.metrics|dictsort:"summary.score" %}
 				<div class="panel panel-default">
 					<div class="panel-heading {{ metric.summary.rating }}" role="tab" id="heading{{ container.categories.name|slugify }}{{ forloop.counter }}">
 						<h4 class="panel-title">

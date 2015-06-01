@@ -24,7 +24,7 @@ def index(request, sprint_index, team_name):
 	chart_radar_labels = []
 	chart_radar_data = []
 	for cat in categories_list:
-		cat['items'] = [{'obj': m, 'summary': m.summary(sprint, team)} for m in cat['items']]
+		cat['metrics'] = [{'obj': m, 'summary': m.summary(sprint, team)} for m in cat['items']]
 		score = cat['categories'].rate(sprint, team)
 		cat['score'] = score
 		chart_radar_data.append(score)
