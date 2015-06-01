@@ -70,7 +70,7 @@
 										{% endfor %}
 									</tr>
 								{% empty %}
-									<tr><td colspan="100%">Nothing was found. Good job!</td></tr>
+									<tr><td colspan="100%">No results available.</td></tr>
 								{% endfor %}
 							</table>
 							<p>Time since last update: {{ metric.obj.last_query|timesince }}</p>
