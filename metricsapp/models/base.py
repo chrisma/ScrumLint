@@ -61,10 +61,10 @@ class Metric(models.Model):
 		return self.name
 
 	def _run_query(self):
-		return result_data[self.name]
+		raise NotImplemented
 
 	def _calculate_score(self, *args, **kwargs):
-		return 50*self.severity
+		raise NotImplemented
 
 	def run(self):
 		self.results = self._process(self._run_query())
