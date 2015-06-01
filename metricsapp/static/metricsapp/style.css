@@ -1,3 +1,8 @@
+/* Bootstrap overrides */
+.well.menu {
+    padding: 0px;
+}
+
 /* http://jsfiddle.net/panchroma/3gYa3/ */
 .panel-heading .accordion-toggle:after {
     /* symbol for "opening" panels */
