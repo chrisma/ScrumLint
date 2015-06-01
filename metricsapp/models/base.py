@@ -129,29 +129,26 @@ class SprintMetric(Metric):
 		self.last_query = timezone.now()
 		self.save()
 
-	def get_results(self, sprint, team, *args, **kwargs):
+	def _result_getter(self, sprint, team):
+		# https://github.com/bradjasper/django-jsonfield/issues/101
 		if isinstance(self.results, str):
 			results = json.loads(self.results)
-			print('GOT A STRING, WANTED A DICT')
 		else:
 			results = self.results
+		return results[sprint][team['name']]
+
+	def get_results(self, sprint, team, *args, **kwargs):
+		data = self._result_getter(sprint, team)
 		score = self._calculate_score(sprint, team)
 		rating = self.score_rating(score)
-		return {'data':results[sprint][team['name']], 'score':score, 'rating':rating}
+		return {'data': data, 'score':score, 'rating':rating}
 
 	def get_value(self, sprint, team, column):
-		if isinstance(self.results, str):
-			results = json.loads(self.results)
-			print('GOT A STRING, WANTED A DICT')
-		else:
-			results = self.results
-		results = results[sprint][team['name']]
-		
+		results = self._result_getter(sprint, team)
 		try:
 			score_index = results['columns'].index(column)
 		except ValueError:
 			return None
-
 		rows = results['rows']
 		if rows:
 			value = rows[0][score_index]
