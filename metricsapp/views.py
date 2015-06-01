@@ -24,12 +24,12 @@ def index(request, sprint_index, team_name):
 	chart_radar_labels = []
 	chart_radar_data = []
 	for cat in categories_list:
-		cat['items'] = [{'obj': m, 'result': m.get_results(sprint)} for m in cat['items']]
-		score = cat['categories'].rate(sprint)
+		cat['items'] = [{'obj': m, 'result': m.get_results(sprint, team)} for m in cat['items']]
+		score = cat['categories'].rate(sprint, team)
 		cat['score'] = score
 		chart_radar_data.append(score)
 		chart_radar_labels.append(cat['categories'].name)
-	sprint_scores = [Metric.rate(all_metrics, s) for s in conf.sprints[:sprint_index]]
+	sprint_scores = [Metric.rate(all_metrics, s, team) for s in conf.sprints[:sprint_index]]
 
 	context = {	
 		'categories_list': categories_list, 
@@ -38,7 +38,7 @@ def index(request, sprint_index, team_name):
 		'sprint_list': conf.sprints,
 		'current_team': team,
 		'team_list': conf.teams,
-		'current_sprint_score': Metric.rate(all_metrics, sprint),
+		'current_sprint_score': Metric.rate(all_metrics, sprint, team),
 		'chart_overall_labels': list(conf.sprints[:sprint_index]),
 		'chart_overall_data': sprint_scores,
 		'chart_radar_data': chart_radar_data,

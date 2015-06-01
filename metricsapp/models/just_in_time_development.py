@@ -3,7 +3,7 @@ from ..settings import conf
 import json
 
 class JustInTimeDevelopment(SprintMetric):
-	def _calculate_score(self, sprint=conf.sprints[-1]):
+	def _calculate_score(self, sprint, team):
 		SCORE_COLUMN = 'Percentage'
 		UPPER_BOUND = 0.3
 		
@@ -12,7 +12,7 @@ class JustInTimeDevelopment(SprintMetric):
 			print('GOT A STRING, WANTED A DICT')
 		else:
 			results = self.results
-		results = results[sprint]
+		results = results[sprint][team['name']]
 		
 		score_index = results['columns'].index(SCORE_COLUMN)
 		value = results['rows'][0][score_index]

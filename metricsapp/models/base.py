@@ -11,8 +11,8 @@ from ..settings import conf
 class Category(models.Model):
 	name = models.CharField(max_length=50)
 
-	def rate(self, sprint):
-		return Metric.rate(self.metric_set.select_subclasses(), sprint)
+	def rate(self, sprint, team):
+		return Metric.rate(self.metric_set.select_subclasses(), sprint, team)
 
 	def __str__(self):
 		return self.name
@@ -23,11 +23,11 @@ class Category(models.Model):
 class Metric(models.Model):
 
 	@classmethod
-	def rate(cls, list_of_metrics, sprint):
+	def rate(cls, list_of_metrics, sprint, team):
 		rating = 0
 		max_rating = 0
 		for metric in list_of_metrics:
-			metric_results = metric.get_results(sprint)
+			metric_results = metric.get_results(sprint, team)
 			rating += metric_results['score'] * metric.severity
 			max_rating += 100 * metric.severity
 		result = (rating/max_rating)*100
@@ -95,34 +95,40 @@ class Metric(models.Model):
 
 
 class SprintMetric(Metric):
-	def _run_query(self, sprint=None):
+	def _run_query(self, sprint, team):
 		url = 'http://192.168.30.196:7478/db/data/transaction/commit'
 		payload = {
 			"statements" : [ {
-				"statement" : self.query.format(sprint=sprint)
+				"statement" : self.query.format(sprint=sprint, team=team['team_name'], label=team['label'])
 			} ]
 		}
 		headers = {'Accept': 'application/json; charset=UTF-8', 'Content-Type': 'application/json'}
 		r = requests.post(url, data=json.dumps(payload), headers=headers)
 
-		print(sprint, r.text[:100])
+		print(sprint, team['name'], r.text[:100])
+		data = r.json()
+		errors = data.get('errors')
+		if errors:
+			print('ERROR:', errors)
 
-		return r.json()
+		return data
 
 	def run(self):
 		results = {}
 		for sprint in conf.sprints:
-			results[sprint] = self._process(self._run_query(sprint))
+			results[sprint] = {}
+			for team in conf.teams:
+				results[sprint][team['name']] = self._process(self._run_query(sprint, team))
 		self.results = results
 		self.last_query = timezone.now()
 		self.save()
 
-	def get_results(self, sprint=conf.sprints[-1], *args, **kwargs):
+	def get_results(self, sprint, team, *args, **kwargs):
 		if isinstance(self.results, str):
 			results = json.loads(self.results)
 			print('GOT A STRING, WANTED A DICT')
 		else:
 			results = self.results
-		score = self._calculate_score(sprint)
+		score = self._calculate_score(sprint, team)
 		rating = self.score_rating(score)
-		return {'data':results[sprint], 'score':score, 'rating':rating}
+		return {'data':results[sprint][team['name']], 'score':score, 'rating':rating}

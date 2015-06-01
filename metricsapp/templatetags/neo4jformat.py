@@ -12,10 +12,12 @@ def format_commit(value, autoescape=True):
 			return False
 		return 'issues' in obj.get('url','')
 
-	link = '<a href="{}" target="_blank">#{}</a>'
+	link = '<a href="{href}" target="_blank">#{number}</a>: {title}'
 	def format(commit):
 		html = link.format(
-			esc(commit['html_url']), esc(commit['number'])
+			href=esc(commit['html_url']),
+			number=esc(commit['number']),
+			title=esc(commit['title'])
 		)
 		return mark_safe(html)
 
@@ -27,7 +29,7 @@ def format_commit(value, autoescape=True):
 	# Check if input is a list
 	if isinstance(value, list):
 		if all([is_commit(e) for e in value]):
-			return mark_safe(', '.join([format(e) for e in value]))
+			return mark_safe(', <br>'.join([format(e) for e in value]))
 		if all([isinstance(e,str) for e in value]):
 			return mark_safe(', '.join(value))
 		return value

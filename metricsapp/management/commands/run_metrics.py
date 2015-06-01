@@ -9,7 +9,7 @@ class Command(BaseCommand):
 		parser.add_argument("-m", "--metric-names", type=str, dest="explicit", nargs="+")
 
 	def handle(self, *args, **options):
-		all_metrics = Metric.objects.select_subclasses()
+		all_metrics = Metric.objects.filter(active=True).select_subclasses()
 		explicit = options['explicit']
 		if explicit:
 			explicit_metrics = [all_metrics.get(name=name) for name in explicit]
