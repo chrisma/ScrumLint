@@ -87,19 +87,19 @@
 
 <script type="text/javascript">
 	var line_data = {
-			labels: {{ chart_overall_labels|safe }},
-			datasets: [
-					{
-							label: "Overall score",
-							fillColor: "rgba(151,187,205,0.2)",
-							strokeColor: "rgba(151,187,205,1)",
-							pointColor: "rgba(151,187,205,1)",
-							pointStrokeColor: "#fff",
-							pointHighlightFill: "#fff",
-							pointHighlightStroke: "rgba(151,187,205,1)",
-							data: {{ chart_overall_data }}
-					}
-			]
+		labels: {{ chart_overall_labels|safe }},
+		datasets: [
+			{
+				label: "Overall score",
+				fillColor: "rgba(151,151,151,0.2)",
+				strokeColor: "{{ current_team.label_color }}",
+				pointColor: "{{ current_team.label_color }}",
+				pointStrokeColor: "#fff",
+				pointHighlightFill: "#fff",
+				pointHighlightStroke: "rgba(151,187,205,1)",
+				data: {{ chart_overall_data }}
+			}
+		]
 	};
 
 	var line_options = {
@@ -120,9 +120,9 @@
 		datasets: [
 			{
 				label: "Project score in detail",
-				fillColor: "rgba(151,187,205,0.2)",
-				strokeColor: "rgba(151,187,205,1)",
-				pointColor: "rgba(151,187,205,1)",
+				fillColor: "rgba(151,151,151,0.2)",
+				strokeColor: "{{ current_team.label_color }}",
+				pointColor: "{{ current_team.label_color }}",
 				pointStrokeColor: "#fff",
 				pointHighlightFill: "#fff",
 				pointHighlightStroke: "rgba(151,187,205,1)",
