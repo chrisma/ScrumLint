@@ -45,25 +45,25 @@
 		{% for container in categories_list|dictsort:"score" %}
 			<h3>{{ container.categories.name }} <small>({{ container.score }})</small></h3>
 
-			{% for metric in container.metrics|dictsort:"summary.score" %}
+			{% for metric, summary in container.metrics|dictsort:"1.score" %}
 				<div class="panel panel-default">
-					<div class="panel-heading {{ metric.summary.rating }}" role="tab" id="heading{{ container.categories.name|slugify }}{{ forloop.counter }}">
+					<div class="panel-heading {{ summary.rating }}" role="tab" id="heading{{ container.categories.name|slugify }}{{ forloop.counter }}">
 						<h4 class="panel-title">
 							<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ container.categories.name|slugify }}{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ container.categories.name|slugify }}{{ forloop.counter }}">
-								<span class="metric-score">{{ metric.summary.score|floatformat }}</span><small>/100</small> <span class="metric-name">{{ metric.obj.name }} <small>{{ metric.obj.description }}</small></span>
+								<span class="metric-score">{{ summary.score|floatformat }}</span><small>/100</small> <span class="metric-name">{{ metric.name }} <small>{{ metric.description }}</small></span>
 							</a>
 						</h4>
 					</div>
 					<div id="collapse{{ container.categories.name|slugify }}{{ forloop.counter }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ container.categories.name|slugify }}{{ forloop.counter }}">
 						<div class="panel-body">
-							<div class="well">{{ metric.obj.explanation }}</div>
+							<div class="well">{{ metric.explanation }}</div>
 							<table class="table">
 								<tr>
-									{% for header in metric.summary.data.columns %}
+									{% for header in summary.data.columns %}
 										<th>{{ header|un_underscore}}</th>
 									{% endfor %}
 								</tr>
-								{% for row in metric.summary.data.rows %}
+								{% for row in summary.data.rows %}
 									<tr>
 										{% for data in row %}
 											<td>{{ data|format_commit }}</td>
@@ -73,7 +73,7 @@
 									<tr><td colspan="100%">No results available.</td></tr>
 								{% endfor %}
 							</table>
-							<p>Time since last update: {{ metric.obj.last_query|timesince }}</p>
+							<p>Time since last update: {{ metric.last_query|timesince }}</p>
 						</div>
 					</div>
 				</div>
