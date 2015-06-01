@@ -12,7 +12,7 @@ class Category(models.Model):
 	name = models.CharField(max_length=50)
 
 	def rate(self, sprint, team):
-		return Metric.rate(self.metric_set.select_subclasses(), sprint, team)
+		return Metric.rate(self.metric_set.filter(active=True).select_subclasses(), sprint, team)
 
 	def __str__(self):
 		return self.name
