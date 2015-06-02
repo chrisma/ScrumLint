@@ -6,7 +6,6 @@ admin.site.register(Category)
 
 @admin.register(Metric)
 class MetricAdmin(admin.ModelAdmin):
-	save_on_top = True # Add another save button at the top of the form
 	# Columns to be shown on overview page
 	list_display = ('__str__', 'list_of_categories', 'active',)
 	# Model attributes to show filters for (on the right side)
