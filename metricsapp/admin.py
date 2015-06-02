@@ -6,6 +6,12 @@ admin.site.register(Category)
 
 @admin.register(Metric)
 class MetricAdmin(admin.ModelAdmin):
+	class Media:
+		css = {
+			"all": ("admin/metric_detail.css",)
+		}
+		# js = ("my_code.js",)
+
 	# Columns to be shown on overview page
 	list_display = ('__str__', 'list_of_categories', 'active',)
 	# Model attributes to show filters for (on the right side)
