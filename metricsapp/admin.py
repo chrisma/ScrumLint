@@ -13,11 +13,22 @@ class MetricAdmin(admin.ModelAdmin):
 		# js = ("my_code.js",)
 
 	# Columns to be shown on overview page
-	list_display = ('__str__', 'list_of_categories', 'active',)
+	list_display = ('__str__', 'list_of_categories', 'severity', 'active',)
 	# Model attributes to show filters for (on the right side)
-	list_filter = ('active',)
+	list_filter = ('active', 'severity',)
 	readonly_fields = ('last_query', 'formatted_results',)
-	exclude = ('results',)
+	# suit tabs
+	suit_form_tabs = (('general', 'General'), ('query', 'Query settings'))
+	fieldsets = [
+		(None, {
+			'classes': ('suit-tab', 'suit-tab-general',),
+			'fields': ['name', 'description', 'categories', 'explanation', 'active', 'severity']
+		}),
+		(None, {
+			'classes': ('suit-tab', 'suit-tab-query',),
+			'fields': ['query', 'endpoint', 'last_query', 'formatted_results']
+		}),
+	]
 
 	def list_of_categories(self, metric):
 		return ', '.join([c.name for c in metric.categories.all()])
