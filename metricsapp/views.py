@@ -15,7 +15,11 @@ def group_by(queryset, attrib):
 				result.append({attrib:ele, 'items':[element]})
 	return result
 
-def index(request, sprint_index, team_name):
+def index(request, sprint_index=None, team_name=None):
+	if team_name is None:
+		team_name = conf.teams[0]["name"]
+	if sprint_index is None:
+		sprint_index = len(conf.sprints)
 	team = [team for team in conf.teams if team["name"] == team_name][0]
 	sprint_index = int(sprint_index)
 	sprint = conf.sprints[sprint_index-1]
