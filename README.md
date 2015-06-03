@@ -11,7 +11,7 @@
 
 * Load in seed data
 
-  `pm runscript seed`
+  `python manage.py runscript seed`
   
 * Retrieve the data for all metrics
 
