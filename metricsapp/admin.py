@@ -8,9 +8,13 @@ admin.site.register(Category)
 class MetricAdmin(admin.ModelAdmin):
 	class Media:
 		css = {
-			"all": ("admin/metric_detail.css",)
+			"all": ("admin/metric_detail.css", 
+					"admin/pretty-json.css",)
 		}
-		# js = ("my_code.js",)
+		js = ("admin/underscore-min.js",
+			  "admin/backbone-min.js",
+			  "admin/pretty-json-min.js",
+			  "admin/style-json.js",)
 
 	# Columns to be shown on overview page
 	list_display = ('__str__', 'list_of_categories', 'severity', 'active',)
@@ -18,7 +22,7 @@ class MetricAdmin(admin.ModelAdmin):
 	list_filter = ('active', 'severity',)
 	readonly_fields = ('last_query', 'formatted_results',)
 	# suit tabs
-	suit_form_tabs = (('general', 'General'), ('query', 'Query settings'))
+	suit_form_tabs = (('general', 'General'), ('query', 'Query information'))
 	fieldsets = [
 		(None, {
 			'classes': ('suit-tab', 'suit-tab-general',),
