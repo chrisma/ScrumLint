@@ -1,10 +1,25 @@
 # ScrumLint
 
 ## Setup
-`pip install -r requirements.txt`
+* Install the dependencies (preferably in a [virtualenv](https://pypi.python.org/pypi/virtualenv/))
 
-`python manage.py syncdb`
+  `pip install -r requirements.txt`
 
-`python manage.py run_metrics`
+* Create the necessary database tables (incl. superuser)
 
-`python manage.py runserver`
+  `python manage.py syncdb`
+
+* Load in seed data
+
+  `pm runscript seed`
+  
+* Retrieve the data for all metrics
+
+  `python manage.py run_metrics`
+
+* Run the development server
+
+  `python manage.py runserver`
+
+* Visit the index page at `localhost:8000`
+* Visit the admin at `localhost:8000/admin` (login with superuser credentials)
