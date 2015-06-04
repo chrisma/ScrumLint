@@ -19,4 +19,18 @@ $(document).ready(function() {
 	var line_ctx = $("#overall").get(0).getContext("2d");
 	//line_options is filled in the template
 	var myLineChart = new Chart(line_ctx).Line(line_data, line_options);
+
+	/*
+	 * Metrics
+	 */
+	//open the metric selected in the hash and scroll to it
+	var hash = window.location.hash;
+	if (hash) {
+		$(hash).addClass('in');
+		$(hash)[0].scrollIntoView(true);
+	}
+	//update hash if metric is opened
+	$('.collapse').on('show.bs.collapse', function () {
+		history.pushState(null, null, '#' + $(this).attr('id'));
+	});
 });
