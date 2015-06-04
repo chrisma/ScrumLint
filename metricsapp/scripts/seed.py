@@ -143,7 +143,7 @@ def import_data():
     metricsapp_category_2 = importer.save_or_locate(metricsapp_category_2)
 
     metricsapp_category_3 = Category()
-    metricsapp_category_3.name = 'Workload'
+    metricsapp_category_3.name = 'Productivity'
     metricsapp_category_3 = importer.save_or_locate(metricsapp_category_3)
 
     # Processing model: DailyUserStoryThroughput
@@ -206,6 +206,21 @@ def import_data():
     metricsapp_neverendingstory_1.severity = 1.0
     metricsapp_neverendingstory_1 = importer.save_or_locate(metricsapp_neverendingstory_1)
     metricsapp_neverendingstory_1.categories.add(metricsapp_category_1)
+
+    # Processing model: NeverEndingStory
+
+    from metricsapp.models import CommitsPerDev
+
+    metricsapp_neverendingstory_1 = CommitsPerDev()
+    metricsapp_neverendingstory_1.name = "Don't Be Afraid of Commitment"
+    metricsapp_neverendingstory_1.description = 'Amount of commits per Developer.'
+    metricsapp_neverendingstory_1.explanation = '"Commit early, commit often" is an important mantra when developing in large teams. It allows coworkers to build on functionality and makes version control easier.\r\n'
+    metricsapp_neverendingstory_1.query = 'MATCH (m:GithubMilestone)-[:milestone]-(c:GithubCommit)-[:author]-(u:GithubUser) WHERE u.team = "{team}" and m.title = "{sprint}" and u.role <> "org" and c.merge = FALSE WITH count(c) AS Commits, avg(c.total) AS AverageChangedLines MATCH (u:GithubUser) WHERE u.role <> "org" AND u.team = "{team}" RETURN Commits, count(u) as devs, AverageChangedLines, round(100 * (toFloat(Commits) / count(u))) / 100 as CommitsperDev'
+    metricsapp_neverendingstory_1.endpoint = 'http://192.168.30.196:7478/db/data/transaction/commit'
+    metricsapp_neverendingstory_1.active = True
+    metricsapp_neverendingstory_1.severity = 0.5
+    metricsapp_neverendingstory_1 = importer.save_or_locate(metricsapp_neverendingstory_1)
+    metricsapp_neverendingstory_1.categories.add(metricsapp_category_3)
 
     print()
     print("DONE The metrics are now in the database.")
