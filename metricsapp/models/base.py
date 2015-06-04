@@ -88,7 +88,6 @@ class Metric(models.Model):
 
 class SprintMetric(Metric):
 	def _run_query(self, sprint, team):
-		url = 'http://192.168.30.196:7478/db/data/transaction/commit'
 		payload = {
 			"statements" : [ {
 				"statement" : self.query.format(
@@ -100,7 +99,7 @@ class SprintMetric(Metric):
 			} ]
 		}
 		headers = {'Accept': 'application/json; charset=UTF-8', 'Content-Type': 'application/json'}
-		r = requests.post(url, data=json.dumps(payload), headers=headers)
+		r = requests.post(self.endpoint, data=json.dumps(payload), headers=headers)
 
 		print(sprint, team['name'], r.text[:100])
 		data = r.json()
