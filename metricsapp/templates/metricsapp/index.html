@@ -49,12 +49,12 @@
 				<div class="panel panel-default">
 					<div class="panel-heading {{ summary.rating }}" role="tab" id="heading{{ container.categories.name|slugify }}{{ forloop.counter }}">
 						<h4 class="panel-title">
-							<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ container.categories.name|slugify }}{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ container.categories.name|slugify }}{{ forloop.counter }}">
+							<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#{{ container.categories.name|slugify }}-{{ metric.name|slugify }}" aria-expanded="false" aria-controls="collapse{{ container.categories.name|slugify }}{{ forloop.counter }}">
 								<span class="metric-score">{{ summary.score|floatformat }}</span><small>/100</small> <span class="metric-name">{{ metric.name }} <small>{{ metric.description }}</small></span>
 							</a>
 						</h4>
 					</div>
-					<div id="collapse{{ container.categories.name|slugify }}{{ forloop.counter }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ container.categories.name|slugify }}{{ forloop.counter }}">
+					<div id="{{ container.categories.name|slugify }}-{{ metric.name|slugify }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ container.categories.name|slugify }}{{ forloop.counter }}">
 						<div class="panel-body">
 							<div class="well">{{ metric.explanation }}</div>
 							<table class="table">
@@ -102,20 +102,7 @@
 		]
 	};
 
-	var line_options = {
-		bezierCurve : true,
-		datasetFill : true,
-		datasetStrokeWidth : 4,
-		maintainAspectRatio: false,
-		responsive: true
-	}
-
-	// Chart.defaults.global.responsive = true;
-	// Get context with jQuery - using jQuery's .get() method.
-	var line_ctx = $("#overall").get(0).getContext("2d");
-	var myLineChart = new Chart(line_ctx).Line(line_data, line_options);
-
-	var data = {
+	var radar_data = {
 		labels: {{ chart_radar_labels|safe }},
 		datasets: [
 			{
@@ -130,9 +117,6 @@
 			}
 		]
 	};
-
-	var radar_ctx = $("#radar").get(0).getContext("2d");
-	var myRadarChart = new Chart(radar_ctx).Radar(data);
 </script>
 
 {% endblock %}{# content#}
