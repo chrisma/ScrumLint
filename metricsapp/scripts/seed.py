@@ -146,6 +146,10 @@ def import_data():
     metricsapp_category_3.name = 'Productivity'
     metricsapp_category_3 = importer.save_or_locate(metricsapp_category_3)
 
+    metricsapp_category_4 = Category()
+    metricsapp_category_4.name = 'XP Practices'
+    metricsapp_category_4 = importer.save_or_locate(metricsapp_category_4)
+
     # Processing model: DailyUserStoryThroughput
 
     from metricsapp.models.daily_user_story_throughput import DailyUserStoryThroughput
@@ -236,6 +240,21 @@ def import_data():
     metricsapp_speedyprs_1.severity = 0.5
     metricsapp_speedyprs_1 = importer.save_or_locate(metricsapp_speedyprs_1)
     metricsapp_speedyprs_1.categories.add(metricsapp_category_2)
+
+    # Processing model: PersonalCodeOwnership
+
+    from metricsapp.models import PersonalCodeOwnership
+
+    metricsapp_personal_code_ownership_1 = PersonalCodeOwnership()
+    metricsapp_personal_code_ownership_1.name = "Personal Code Ownership"
+    metricsapp_personal_code_ownership_1.description = 'Code is edited heavily by few developers.'
+    metricsapp_personal_code_ownership_1.explanation = 'Collective Code Ownership, the convention, that every team member is not only allowed, but in fact has a positive duty, to make changes to any code file as necessary, is part of agile development (especially XP). It can help reduce the risk that the absence of a few developer will stall work on a certain area of code. Furthermore it can help prevent "Conway\'s Law", helps share technical knowledge between developers and encourages each developer to feel responsible for the quality of the whole.\r\n'
+    metricsapp_personal_code_ownership_1.query = 'MATCH (fc:GithubFileChange)-[:files]-(c:NonMergeCommit)-[]-(u:GithubUser) WHERE has(fc.filename) AND fc.filename<>"" AND u.role <> "org" AND u.team = "{team}" MATCH c-[:milestone]-(m:GithubMilestone) WHERE m.title="{sprint}" WITH fc, u ORDER BY u.login WITH fc.filename as Filename, collect(DISTINCT u.login) as Authors, count(fc) as Edits WITH Filename, Authors, Edits, length(Authors) as AuthorAmount WHERE Edits > 8 AND AuthorAmount < 3 RETURN Filename,  AuthorAmount, Authors, Edits ORDER BY AuthorAmount ASC, Edits DESC'
+    metricsapp_personal_code_ownership_1.endpoint = 'http://192.168.30.196:7478/db/data/transaction/commit'
+    metricsapp_personal_code_ownership_1.active = True
+    metricsapp_personal_code_ownership_1.severity = 1.0
+    metricsapp_personal_code_ownership_1 = importer.save_or_locate(metricsapp_personal_code_ownership_1)
+    metricsapp_personal_code_ownership_1.categories.add(metricsapp_category_4)
 
     print()
     print("DONE The metrics are now in the database.")
