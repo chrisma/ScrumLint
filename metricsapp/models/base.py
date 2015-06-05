@@ -130,9 +130,10 @@ class SprintMetric(Metric):
 
 	def _result_getter(self, sprint, team):
 		# https://github.com/bradjasper/django-jsonfield/issues/101
-		results = self.results
-		while isinstance(results, str):
-			results = json.loads(results)
+		if isinstance(self.results, str):
+			results = json.loads(self.results)
+		else:
+			results = self.results
 		return results[sprint][team['name']]
 
 	def summary(self, sprint, team, *args, **kwargs):
