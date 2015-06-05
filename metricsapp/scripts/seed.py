@@ -222,6 +222,21 @@ def import_data():
     metricsapp_commitsperdev_1 = importer.save_or_locate(metricsapp_commitsperdev_1)
     metricsapp_commitsperdev_1.categories.add(metricsapp_category_3)
 
+    # Processing model: SpeedyPRs
+
+    from metricsapp.models import SpeedyPRs
+
+    metricsapp_speedyprs_1 = SpeedyPRs()
+    metricsapp_speedyprs_1.name = "Need for Speed(y pull requests)"
+    metricsapp_speedyprs_1.description = 'Pull requests that were closed within 30 minutes without comments.'
+    metricsapp_speedyprs_1.explanation = 'Pull requests can be a tool to help inform team members what functionality is added in a collection of commits. It allows team members and stakeholders to comment and perform code review. Furthermore, continuous integration services can run the proposed changes, making sure all tests pass. If pull requests are closed in a short timespan, many of these possibilities remain unused.\r\n'
+    metricsapp_speedyprs_1.query = 'MATCH (m:GithubMilestone)-[:milestone]-(pri:PullRequestIssue)-[:user]-(u:GithubUser) WHERE pri.state="closed" AND pri.comments=0 AND u.team="{team}" AND m.title = "{sprint}" WITH pri, (pri.closed_at-pri.created_at) as ClosedWithinSecs WHERE ClosedWithinSecs < (60*60*0.5) WITH count(pri) as Amount, collect(pri) as PullRequests, collect(ClosedWithinSecs) as ClosingTimes MATCH (m:GithubMilestone)-[:milestone]-(all:PullRequestIssue)-[:user]-(u:GithubUser) WHERE u.team="{team}" AND m.title = "{sprint}" WITH PullRequests, count(all) as Total, extract(x IN ClosingTimes | round(x/60.0)) as ClosedWithinMinutes, Amount RETURN PullRequests, ClosedWithinMinutes, Amount, Total, Amount/(Total*1.0) as Percentage'
+    metricsapp_speedyprs_1.endpoint = 'http://192.168.30.196:7478/db/data/transaction/commit'
+    metricsapp_speedyprs_1.active = True
+    metricsapp_speedyprs_1.severity = 0.5
+    metricsapp_speedyprs_1 = importer.save_or_locate(metricsapp_speedyprs_1)
+    metricsapp_speedyprs_1.categories.add(metricsapp_category_2)
+
     print()
     print("DONE The metrics are now in the database.")
     print("Run 'python manage.py run_metrics' to retrieve the data for all metrics.")
