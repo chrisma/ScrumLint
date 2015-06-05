@@ -256,6 +256,21 @@ def import_data():
     metricsapp_personal_code_ownership_1 = importer.save_or_locate(metricsapp_personal_code_ownership_1)
     metricsapp_personal_code_ownership_1.categories.add(metricsapp_category_4)
 
+    # Processing model: MonsterStories
+
+    from metricsapp.models import MonsterStories
+
+    metricsapp_monster_stories_1 = MonsterStories()
+    metricsapp_monster_stories_1.name = "Scary Monster Stories"
+    metricsapp_monster_stories_1.description = 'User stories that are too large.'
+    metricsapp_monster_stories_1.explanation = '.\r\n'
+    metricsapp_monster_stories_1.query = 'MATCH (u:GithubUser)-[:user]-(i:GithubIssue)-[:milestone]-(m:GithubMilestone) WHERE i.body <> "" and m.title = "{sprint}" WITH AVG(length(i.body)) as AvgLength MATCH (v:GithubUser)-[:user]-(j:GithubIssue)-[:milestone]-(n:GithubMilestone) WHERE (length(split(j.body,"[ ]"))-1) + (length(split(j.body,"[x]"))-1) <> 0 and n.title = "{sprint}" WITH AVG((length(split(j.body,"[ ]"))-1) + (length(split(j.body,"[x]"))-1)) as AvgAmountCB, AvgLength MATCH (w:GithubUser)-[:user]-(k:GithubIssue)-[:milestone]-(o:GithubMilestone) WHERE w.team = "{team}" and o.title = "{sprint}" AND (length(k.body) >= AvgLength*2 OR (length(split(k.body,"[ ]"))-1) + (length(split(k.body,"[x]"))-1) > AvgAmountCB*2) RETURN count(k) as IssueCount, collect(k.number) as Issue, collect(length(k.body)) as Length, AvgLength, collect((length(split(k.body,"[ ]"))-1) + (length(split(k.body,"[x]"))-1)) as AmountCheckBoxes, AvgAmountCB'
+    metricsapp_monster_stories_1.endpoint = 'http://192.168.30.196:7478/db/data/transaction/commit'
+    metricsapp_monster_stories_1.active = True
+    metricsapp_monster_stories_1.severity = 1.0
+    metricsapp_monster_stories_1 = importer.save_or_locate(metricsapp_monster_stories_1)
+    metricsapp_monster_stories_1.categories.add(metricsapp_category_4)
+
     print()
     print("DONE The metrics are now in the database.")
     print("Run 'python manage.py run_metrics' to retrieve the data for all metrics.")
