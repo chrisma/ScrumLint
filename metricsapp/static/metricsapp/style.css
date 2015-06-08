@@ -7,6 +7,17 @@
     margin-bottom: 50px;
 }
 
+.jumbotron {
+    background-color: #fff;
+}
+
+/* Custom elements*/
+#key {
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);
+}
+
 /* http://jsfiddle.net/panchroma/3gYa3/ */
 .panel-heading .accordion-toggle:after {
     /* symbol for "opening" panels */

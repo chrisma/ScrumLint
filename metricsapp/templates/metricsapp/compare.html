@@ -1,0 +1,55 @@
+{% extends 'metricsapp/base.html' %}
+
+{% load bootstrap3 %}
+{% load neo4jformat %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+	<h1>Comparison <small>How teams stack up against one another</a></small></h1>
+</div>
+
+<div class="well menu">
+	<ul class="nav nav-pills">
+		{% for sprint in sprint_list %}
+			<li role="presentation" {% if current_sprint == sprint %}class="active"{% endif %}><a href="/compare/sprint/{{ forloop.counter }}">{{ sprint }}</a></li>
+		{% endfor %}
+	</ul>
+</div>
+
+<div class="jumbotron" id="score_keeper">
+	<div id="key">
+		{% for team, score_list in metric_list %}
+		<span style="color: {{ team.label_color }}">{{ team.name }}</span>
+		{% endfor %}
+	</div>
+	<div>
+		<canvas id="overall" width="100%" height="450px"></canvas>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var line_data = {
+		labels: {{ line_chart_labels|safe }},
+		datasets: [
+			{% for team, score_list in metric_list %}
+				{
+					label: "{{ team.name }}",
+					fillColor: "rgba(1,1,1,0.0)",
+					// fillColor: "{{ team.label_color|hex_to_rgb:'rgba({r},{g},{b},0.1)' }}",
+					strokeColor: "{{ team.label_color }}",
+					pointColor: "{{ team.label_color }}",
+					pointStrokeColor: "#fff",
+					pointHighlightFill: "#fff",
+					pointHighlightStroke: "rgba(151,187,205,1)",
+					data: {{ score_list }}
+				},
+			{% endfor %}
+		]
+	};
+</script>
+
+{% endblock %}{# content#}

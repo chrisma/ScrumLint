@@ -50,3 +50,22 @@ def index(request, sprint_index=None, team_name=None):
 	}
 	
 	return render(request, 'metricsapp/index.html', context)
+
+def compare(request, sprint_index=None):
+	if sprint_index is None:
+		sprint_index = len(conf.sprints)
+	sprint_index = int(sprint_index)
+	sprint = conf.sprints[sprint_index-1]
+	all_metrics = Metric.objects.filter(active=True).select_subclasses()
+	metric_list = []
+	for team in conf.teams:
+		scores = [Metric.rate(all_metrics, s, team) for s in conf.sprints[:sprint_index]]
+		metric_list.append( (team, scores) )
+
+	context = {
+		'sprint_list': conf.sprints,
+		'current_sprint': sprint,
+		'line_chart_labels': list(conf.sprints[:sprint_index]),
+		'metric_list': metric_list,
+	}
+	return render(request, 'metricsapp/compare.html', context)
