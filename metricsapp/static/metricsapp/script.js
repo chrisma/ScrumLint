@@ -4,9 +4,16 @@ $(document).ready(function() {
 	 */
 
 	/* Radar chart */
-	var radar_ctx = $("#radar").get(0).getContext("2d");
-	// radar_data is filled in the template
-	var myRadarChart = new Chart(radar_ctx).Radar(radar_data);
+	try {
+		var radar_ctx = $("#radar").get(0).getContext("2d");
+		// radar_data is filled in the template
+		var myRadarChart = new Chart(radar_ctx).Radar(radar_data);
+	}
+	catch (e) {
+		console.error('Failed to draw radar chart.');
+		console.error(e);
+	}
+
 
 	/* Line chart */
 	var line_options = {
