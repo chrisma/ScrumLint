@@ -32,7 +32,7 @@ def index(request, sprint_index=None, team_name=None):
 		score = cat['categories'].rate(sprint, team)
 		cat['score'] = score
 		chart_radar_data.append(score)
-		chart_radar_labels.append(cat['categories'].name)
+		chart_radar_labels.append(str(cat['categories'].name))
 	sprint_scores = [Metric.rate(all_metrics, s, team) for s in conf.sprints[:sprint_index]]
 
 	context = {	

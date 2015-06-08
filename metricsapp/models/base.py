@@ -130,7 +130,7 @@ class SprintMetric(Metric):
 
 	def _result_getter(self, sprint, team):
 		# https://github.com/bradjasper/django-jsonfield/issues/101
-		if isinstance(self.results, str):
+		if (isinstance(self.results, str) or isinstance(self.results, unicode)):
 			results = json.loads(self.results)
 		else:
 			results = self.results

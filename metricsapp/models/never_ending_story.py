@@ -9,7 +9,7 @@ class NeverEndingStory(SprintMetric):
 		LOWER_BOUND = 0.2
 		MULTIPLIER_COLUMN = "InSprints"
 		
-		if isinstance(self.results, str):
+		if (isinstance(self.results, str) or isinstance(self.results, unicode)):
 			results = json.loads(self.results)
 			print('GOT A STRING, WANTED A DICT')
 		else:
