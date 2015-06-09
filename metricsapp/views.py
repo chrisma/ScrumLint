@@ -2,6 +2,8 @@ from django.shortcuts import render
 from .models import Metric, Category
 from .settings import conf
 
+from django.http import JsonResponse, HttpResponseNotAllowed
+
 def group_by(queryset, attrib):
 	result = []
 	for element in queryset:
@@ -69,3 +71,25 @@ def compare(request, sprint_index=None):
 		'metric_list': metric_list,
 	}
 	return render(request, 'metricsapp/compare.html', context)
+
+
+from django.views.decorators.csrf import csrf_exempt
+# See https://docs.djangoproject.com/en/1.8/ref/csrf/
+# for the proper way to handle CSRF & POST
+@csrf_exempt
+def deactivate(request):
+	# request.POST can be {} on POST request
+	if request.method != "POST":
+		message = '405 - Method Not Allowed. Only POST is supported.'
+		# first constructor parameter is the list of _allowed_ methods
+		return HttpResponseNotAllowed(['POST'], message)
+	try:
+		metric_id = request.POST['metric_id']
+		# Don't have to select_subclasses() here,
+		# active is defined on the base model.
+		metric = Metric.objects.get(id=metric_id)
+	except (ValueError, Metric.DoesNotExist):
+		return JsonResponse({'success': False})
+	metric.active = False
+	metric.save()
+	return JsonResponse({'success': True})
