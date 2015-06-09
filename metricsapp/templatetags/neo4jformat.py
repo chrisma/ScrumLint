@@ -32,7 +32,7 @@ def format_commit(value, autoescape=True):
 			return mark_safe('<br>'.join([format(e) for e in value]))
 		if all([isinstance(e,str) for e in value]):
 			return mark_safe(', '.join(value))
-		if all([isinstance(e,float) for e in value]):
+		if all([isinstance(e,float) or isinstance(e,int) for e in value]):
 			return mark_safe('<br>'.join(map(str,value)))
 		return value
 			
