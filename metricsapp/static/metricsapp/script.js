@@ -30,6 +30,7 @@ $(document).ready(function() {
 	/*
 	 * Metrics
 	 */
+	/* Allow referencing metrics in the hash */
 	//open the metric selected in the hash and scroll to it
 	var hash = window.location.hash;
 	if (hash) {
@@ -40,4 +41,38 @@ $(document).ready(function() {
 	$('.collapse').on('show.bs.collapse', function () {
 		history.pushState(null, null, '#' + $(this).attr('id'));
 	});
+
+	/* Deactivate metrics */
+	function remove_panel($panel) {
+		var sure = confirm("This will deactivate the metric \n'" +
+			name + "'. \n" +
+			"It can be reactivated in the administrative view.\n" +
+			"Are you sure?");
+		if (!sure) {return}
+		//the panel we're referencing in the hash is being removed
+		history.pushState(null, null, '#')
+		name = $panel.find('.metric-name').text();
+		animation_time = 800;
+		$panel.slideUp(animation_time);
+		var message = "'" + name + "'<br> deactivated";
+		var notify = function(){
+			//https://github.com/ifightcrime/bootstrap-growl/
+			$.bootstrapGrowl(message, {
+				type: 'success',
+				width: 300,
+				delay: 3000,
+			});
+		};
+		//Show notification shortly before the animation ends
+		setTimeout(notify, animation_time-200);
+	}
+
+	$('a.deactivate').click(function(event){
+		// stops the href="#" from jumping to the top of the page
+		event.preventDefault();
+		var metric_id = $(this).data('metric-id');
+		var $panel = $(this).closest('div.panel-default');
+		remove_panel($panel);
+	});
+
 });
