@@ -59,7 +59,10 @@
 					</div>
 					<div id="{{ container.categories.name|slugify }}-{{ metric.name|slugify }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ container.categories.name|slugify }}{{ forloop.counter }}">
 						<div class="panel-body">
-							<div class="well">{{ metric.explanation }}</div>
+							<div class="well">
+								<p>{{ metric.explanation }}</p>
+								<p>Importance: <strong>{{ metric.get_severity_display }}</strong> (influences the ScrumLint score with a factor of {{ metric.severity }}) | <a href="{% url 'admin:metricsapp_metric_change' metric.id %}">edit this metric</a></p>
+							</div>
 							<table class="table">
 								<tr>
 									{% for header in summary.data.columns %}
