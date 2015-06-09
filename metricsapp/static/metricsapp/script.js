@@ -44,14 +44,8 @@ $(document).ready(function() {
 
 	/* Deactivate metrics */
 	function remove_panel($panel) {
-		var sure = confirm("This will deactivate the metric \n'" +
-			name + "'. \n" +
-			"It can be reactivated in the administrative view.\n" +
-			"Are you sure?");
-		if (!sure) {return}
 		//the panel we're referencing in the hash is being removed
 		history.pushState(null, null, '#')
-		name = $panel.find('.metric-name').text();
 		animation_time = 800;
 		$panel.slideUp(animation_time);
 		var message = "'" + name + "'<br> deactivated";
@@ -70,9 +64,23 @@ $(document).ready(function() {
 	$('a.deactivate').click(function(event){
 		// stops the href="#" from jumping to the top of the page
 		event.preventDefault();
+		$panel = $(this).closest('div.panel-default');
+		name = $panel.find('.metric-name').text();
+		var sure = confirm("This will deactivate the metric \n'" +
+			name + "'. \n" +
+			"It can be reactivated in the administrative view.\n" +
+			"Are you sure?");
+		if (!sure) {return}
 		var metric_id = $(this).data('metric-id');
-		var $panel = $(this).closest('div.panel-default');
-		remove_panel($panel);
+		$.ajax({
+			type: "POST",
+			url: '/deactivate',
+			data: {metric_id: metric_id},
+			success: function(){
+				remove_panel($panel);
+			},
+			dataType: 'json'
+		});
 	});
 
 });
