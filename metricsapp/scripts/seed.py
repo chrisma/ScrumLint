@@ -271,6 +271,21 @@ def import_data():
     metricsapp_monster_stories_1 = importer.save_or_locate(metricsapp_monster_stories_1)
     metricsapp_monster_stories_1.categories.add(metricsapp_category_4)
 
+    # Processing model: UntestedComplexity
+
+    from metricsapp.models import UntestedComplexity
+
+    metricsapp_untested_complexity_1 = UntestedComplexity()
+    metricsapp_untested_complexity_1.name = "Introducing: 'Untested Complexity'"
+    metricsapp_untested_complexity_1.description = 'Commits that increased code complexity without increasing code coverage.'
+    metricsapp_untested_complexity_1.explanation = 'Having a high percentage of code covered by tests is essential for ensuring the system is thoroughly tested. When committing changes that significantly increase the complexity of the code base (>0.5), tests should be committed as well, increasing the code coverage. If this is not the case for a high percentage of commits, this might be a sign that writing tests and code coverage metrics should be paid more attention to.\r\n'
+    metricsapp_untested_complexity_1.query = 'MATCH (u:GithubUser {{team:"{team}"}})-[:committer]-(c:NonMergeCommit)-[:parents]->(parent:NonMergeCommit) WHERE has(c.total_complexity) AND has(c.test_coverage) AND has(parent.total_complexity) AND has(parent.test_coverage) MATCH c-[:milestone]-(m:GithubMilestone {{title:"{sprint}"}}) WITH parent.total_complexity-c.total_complexity as ComplexityChange, parent.test_coverage-c.test_coverage as CoverageChange, c WHERE ComplexityChange > 0.5  AND CoverageChange <= 0 WITH collect(c) as Commits, collect(ComplexityChange) as ComplexityIncrease, collect(CoverageChange) as CoverageChange, count(c) as Amount MATCH (v:GithubUser {{team:"{team}"}})-[:committer]-(d:NonMergeCommit)-[:milestone]-(m:GithubMilestone {{title:"{sprint}"}}) RETURN Commits, ComplexityIncrease, CoverageChange, Amount, (Amount*1.0)/count(d) as Percentage'
+    metricsapp_untested_complexity_1.endpoint = 'http://192.168.30.196:7478/db/data/transaction/commit'
+    metricsapp_untested_complexity_1.active = True
+    metricsapp_untested_complexity_1.severity = 0.5
+    metricsapp_untested_complexity_1 = importer.save_or_locate(metricsapp_untested_complexity_1)
+    metricsapp_untested_complexity_1.categories.add(metricsapp_category_2)
+
     print()
     print("DONE The metrics are now in the database.")
     print("Run 'python manage.py run_metrics' to retrieve the data for all metrics.")
