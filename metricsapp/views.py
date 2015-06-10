@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Metric, Category
 from .settings import conf
 
-from django.http import JsonResponse, HttpResponseNotAllowed
+from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponseBadRequest
 
 def group_by(queryset, attrib):
 	result = []
@@ -89,7 +89,8 @@ def deactivate(request):
 		# active is defined on the base model.
 		metric = Metric.objects.get(id=metric_id)
 	except (ValueError, Metric.DoesNotExist):
-		return JsonResponse({'success': False})
+		message = '400 - Malformed request.'
+		return HttpResponseBadRequest(message)
 	metric.active = False
 	metric.save()
 	return JsonResponse({'success': True})
