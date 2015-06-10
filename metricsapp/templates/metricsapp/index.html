@@ -61,7 +61,7 @@
 						<div class="panel-body">
 							<div class="well">
 								<p>{{ metric.explanation }}</p>
-								<p>Importance: <strong>{{ metric.get_severity_display }}</strong> (influences the ScrumLint score with a factor of {{ metric.severity }}) | <a href="{% url 'admin:metricsapp_metric_change' metric.id %}">Edit this metric</a> | <a class="deactivate" data-metric-id="{{ metric.id }}" href="#">Deactivate this metric</a></p>
+								<p>Importance: <strong>{{ metric.get_severity_display }}</strong> (influences the ScrumLint score with a factor of {{ metric.severity }}) | <a href="{% url 'admin:metricsapp_metric_change' metric.id %}">Edit</a> this metric | <a class="deactivate" data-metric-id="{{ metric.id }}" href="#"></span>Deactivate</a> this metric</p>
 							</div>
 							<table class="table">
 								<tr>
