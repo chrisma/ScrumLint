@@ -27,6 +27,34 @@ $(document).ready(function() {
 	//line_options is filled in the template
 	var myLineChart = new Chart(line_ctx).Line(line_data, line_options);
 
+	//Show the chart when a panel is fully opened
+	//shown.bs.collapse waits for CSS transitions to complete
+	$('.collapse').on('shown.bs.collapse', function () {
+		var $canvas = $(this).find('.metric-chart');
+		var chart_data = {
+			labels: line_data.labels,
+			datasets: [
+				{
+					fillColor: "rgba(151,151,151,0.2)",
+					strokeColor: $canvas.data('color'),
+					pointColor: $canvas.data('color'),
+					pointStrokeColor: "#fff",
+					pointHighlightFill: "#fff",
+					pointHighlightStroke: "rgba(151,187,205,1)",
+					data: $canvas.data('scores')
+				}
+			]
+		};
+		var chart_options = {
+			datasetStrokeWidth : 3,
+			maintainAspectRatio: false,
+			responsive: true
+		}
+		var ctx = $canvas.get(0).getContext("2d");
+		var chart = new Chart(ctx).Line(chart_data, chart_options);
+	});
+
+
 	/*
 	 * Metrics
 	 */
@@ -38,6 +66,7 @@ $(document).ready(function() {
 		$(hash)[0].scrollIntoView(true);
 	}
 	//update hash if metric is opened
+	//show.bs.collapse fires immediately when the element opens
 	$('.collapse').on('show.bs.collapse', function () {
 		history.pushState(null, null, '#' + $(this).attr('id'));
 	});
