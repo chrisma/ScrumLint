@@ -76,6 +76,16 @@ so that children can be position absolutely within it */
 }
 
 /* Charts */
+
+/* chart-containers are resposnible for the size of charts*/
+#overall-chart-container {
+    height: 200px;
+}
+
+.metric-chart-container {
+    height: 150px;
+}
+
 canvas#overall {
     margin-top:15px;
 }

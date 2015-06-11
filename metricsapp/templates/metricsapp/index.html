@@ -33,8 +33,8 @@
 	<h1>{{ current_sprint_score|floatformat:2 }}<small>/100</span></small></h1>
 	{# Only show line chart if there are more than two datapoints, i.e. sprints #}
 	{% if current_sprint_index > 1 %}
-		<div>
-			<canvas id="overall" width="100%" height="150px"></canvas>
+		<div id="overall-chart-container">
+			<canvas id="overall"></canvas>
 		</div>
 	{% endif %}
 </div>
@@ -81,8 +81,8 @@
 							</table>
 							{# Only show line chart if there are more than two datapoints, i.e. sprints #}
 							{% if current_sprint_index > 1 %}
-								<div style="height: 150px">
-									<canvas data-scores="{{ previous|safe }}" data-color="{{ current_team.label_color }}" class="metric-chart" id="chart-{{ container.categories.name|slugify }}-{{ metric.name|slugify }}" width="100%" height="150px"></canvas>
+								<div class="metric-chart-container">
+									<canvas data-scores="{{ previous|safe }}" data-color="{{ current_team.label_color }}" class="metric-chart" id="chart-{{ container.categories.name|slugify }}-{{ metric.name|slugify }}"></canvas>
 								</div>
 							{% endif %}
 							<p>Time since last update: {{ metric.last_query|timesince }}</p>
