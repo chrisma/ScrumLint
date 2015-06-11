@@ -41,7 +41,12 @@ def format_commit(value, autoescape=True):
 		return mark_safe(html)
 
 	def float_format(f):
-		return "{0:g}".format(f)
+		formatted = "{0:.2f}".format(f)
+		if formatted == '0.00':
+			return '0'
+		if formatted.endswith('.00'):
+			return formatted[:-3]
+		return formatted
 
 	if autoescape:
 		esc = conditional_escape
