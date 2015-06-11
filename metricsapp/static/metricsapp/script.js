@@ -17,11 +17,10 @@ $(document).ready(function() {
 
 	/* Line chart */
 	var line_options = {
-		bezierCurve : true,
-		datasetFill : true,
 		datasetStrokeWidth : 4,
 		maintainAspectRatio: false,
-		responsive: true
+		responsive: true,
+		bezierCurveTension : 0.2
 	}
 	var line_ctx = $("#overall").get(0).getContext("2d");
 	//line_options is filled in the template
@@ -48,7 +47,8 @@ $(document).ready(function() {
 		var chart_options = {
 			datasetStrokeWidth : 3,
 			maintainAspectRatio: false,
-			responsive: true
+			responsive: true,
+			bezierCurveTension : 0.2
 		}
 		var ctx = $canvas.get(0).getContext("2d");
 		var chart = new Chart(ctx).Line(chart_data, chart_options);
