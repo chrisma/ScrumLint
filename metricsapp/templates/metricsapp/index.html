@@ -28,7 +28,7 @@
 <div class="jumbotron" id="score_keeper">
 	<h2><strong>ScrumLint score</strong> of <br><a href="https://github.com/hpi-swt2/event-und-raumplanung" target="_blank">event-und-raumplanung</a>:</h2>
 	<div id="radar-container">
-		<canvas id="radar"></canvas>
+		<canvas id="radar" data-labels="{{ chart_radar_labels }}" data-color="{{ current_team.label_color }}" data-scores="{{ chart_radar_data }}"></canvas>
 	</div>
 	<h1>{{ current_sprint_score|floatformat:2 }}<small>/100</span></small></h1>
 	{# Only show line chart if there are more than two datapoints, i.e. sprints #}
@@ -96,23 +96,5 @@
 {% else %}
 	<p>No metrics are available.</p>
 {% endif %}
-
-<script type="text/javascript">
-	var radar_data = {
-		labels: {{ chart_radar_labels|safe }},
-		datasets: [
-			{
-				label: "Project score in detail",
-				fillColor: "rgba(151,151,151,0.2)",
-				strokeColor: "{{ current_team.label_color }}",
-				pointColor: "{{ current_team.label_color }}",
-				pointStrokeColor: "#fff",
-				pointHighlightFill: "#fff",
-				pointHighlightStroke: "rgba(151,187,205,1)",
-				data: {{ chart_radar_data }}
-			}
-		]
-	};
-</script>
 
 {% endblock %}{# content#}

@@ -16,18 +16,31 @@ $(document).ready(function() {
 	 */
 
 	/* Radar chart */
+	$radar_canvas = $("#radar");
+	var radar_data = {
+		labels: toStrArray($radar_canvas.data('labels')),
+		datasets: [
+			{
+				fillColor: "rgba(151,151,151,0.2)",
+				strokeColor: $radar_canvas.data('color'),
+				pointColor: $radar_canvas.data('color'),
+				pointStrokeColor: "#fff",
+				pointHighlightFill: "#fff",
+				pointHighlightStroke: "rgba(151,187,205,1)",
+				data: $radar_canvas.data('scores')
+			}
+		]
+	};
 	var radar_options = {
 		maintainAspectRatio: false,
 		responsive: true,
 	}
 	try {
-		var radar_ctx = $("#radar").get(0).getContext("2d");
-		// radar_data is filled in the template
-		var myRadarChart = new Chart(radar_ctx).Radar(radar_data, radar_options);
+		var radar_ctx = $radar_canvas.get(0).getContext("2d");
+		new Chart(radar_ctx).Radar(radar_data, radar_options);
 	}
 	catch (e) {
-		console.error('Failed to draw radar chart.');
-		console.error(e);
+		console.error('Failed to draw chart.', e);
 	}
 
 
@@ -55,8 +68,8 @@ $(document).ready(function() {
 		responsive: true,
 		bezierCurveTension : 0.2
 	}
-	var line_ctx = $("#overall").get(0).getContext("2d");
-	new Chart(line_ctx).Line(overall_data, overall_options);
+	var overall_ctx = $overall_canvas.get(0).getContext("2d");
+	new Chart(overall_ctx).Line(overall_data, overall_options);
 
 	/* Individual metrics line charts */
 	//Show the chart when a panel is fully opened
