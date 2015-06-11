@@ -1,8 +1,19 @@
 /* Bootstrap overrides */
+/* Menus */
 .well.menu {
     padding: 0px;
 }
 
+#team-nav {
+    float: left;
+}
+
+#compare-teams-btn {
+    float: right;
+    margin-top: 3px;
+}
+
+/* Main content */
 #accordion {
     margin-bottom: 50px;
 }
@@ -16,6 +27,11 @@
     font-size: 24px;
     font-weight: bold;
     text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);
+}
+
+/* Stops non-floated divs with floating children from collapsing */
+div.spacer {
+    clear: both;
 }
 
 /* http://jsfiddle.net/panchroma/3gYa3/ */

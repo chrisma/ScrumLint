@@ -18,11 +18,13 @@
 </div>
 
 <div class="well menu">
-	<ul class="nav nav-pills">
+	<ul id="team-nav" class="nav nav-pills">
 		{% for team in team_list %}
 			<li role="presentation" {% if current_team.name == team.name %}class="active"{% endif %}><a href="/sprint/{{ current_sprint_index }}/team/{{ team.name }}" {% if current_team.name == team.name %}style="background-color: {{ team.label_color }}"{% endif %}>{{ team.name }}</a></li>
 		{% endfor %}
 	</ul>
+	<a href="/compare" id="compare-teams-btn" class="btn btn-info" role="button"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span> Compare teams</a>
+	<div class="spacer"></div>
 </div>
 
 <div class="jumbotron" id="score_keeper">
