@@ -89,3 +89,10 @@ def hex_to_rgb(hex, format_string='rgb({r},{g},{b})'):
 			'g':int(hex[2:4], 16),
 			'b':int(hex[4:6], 16)}
 	return format_string.format(**out)
+
+@register.filter(name='floor_to_multiple')
+def floor_to_multiple(num, multiple=10):
+	"""Round down number to nearest multiple"""
+	num = float(num)
+	multiple = float(multiple)
+	return num - (num % multiple)
