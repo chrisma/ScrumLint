@@ -48,7 +48,7 @@
 		{% for container in categories_list|dictsort:"score" %}
 			<h3>{{ container.categories.name }} <small>({{ container.score }})</small></h3>
 
-			{% for metric, summary in container.metrics|dictsort:"1.score" %}
+			{% for metric, summary, previous in container.metrics|dictsort:"1.score" %}
 				<div class="panel panel-default">
 					<div class="panel-heading {{ summary.rating }}" role="tab" id="heading{{ container.categories.name|slugify }}{{ forloop.counter }}">
 						<h4 class="panel-title">
@@ -79,6 +79,12 @@
 									<tr><td colspan="100%">No results available.</td></tr>
 								{% endfor %}
 							</table>
+							{# Only show line chart if there are more than two datapoints, i.e. sprints #}
+							{% if current_sprint_index > 1 %}
+								<div style="height: 150px">
+									<canvas data-scores="{{ previous|safe }}" data-color="{{ current_team.label_color }}" class="metric-chart" id="chart-{{ container.categories.name|slugify }}-{{ metric.name|slugify }}" width="100%" height="150px"></canvas>
+								</div>
+							{% endif %}
 							<p>Time since last update: {{ metric.last_query|timesince }}</p>
 						</div>
 					</div>

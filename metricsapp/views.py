@@ -17,6 +17,9 @@ def group_by(queryset, attrib):
 				result.append({attrib:ele, 'items':[element]})
 	return result
 
+# Obligatory comment on how the author is aware of
+# the code's shortcomings, but blames this on the
+# lack of time
 def index(request, sprint_index=None, team_name=None):
 	if team_name is None:
 		team_name = conf.teams[0]["name"]
@@ -30,7 +33,11 @@ def index(request, sprint_index=None, team_name=None):
 	chart_radar_labels = []
 	chart_radar_data = []
 	for cat in categories_list:
-		cat['metrics'] = [(m, m.summary(sprint, team)) for m in cat['items']]
+		metrics_data = []
+		for metric in cat['items']:
+			previous_scores = [metric.summary(s,team)['score'] for s in conf.sprints[:sprint_index]]
+			metrics_data.append( (metric, metric.summary(sprint, team), previous_scores) )
+		cat['metrics'] = metrics_data
 		score = cat['categories'].rate(sprint, team)
 		cat['score'] = score
 		chart_radar_data.append(score)
