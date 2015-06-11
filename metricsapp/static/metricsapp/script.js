@@ -62,8 +62,10 @@ $(document).ready(function() {
 	//open the metric selected in the hash and scroll to it
 	var hash = window.location.hash;
 	if (hash) {
+		//.collapse('show') has a lengthy animation
 		$(hash).addClass('in');
 		$(hash)[0].scrollIntoView(true);
+		$(hash).trigger('shown.bs.collapse');
 	}
 	//update hash if metric is opened
 	//show.bs.collapse fires immediately when the element opens
