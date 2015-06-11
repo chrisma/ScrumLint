@@ -27,8 +27,8 @@
 
 <div class="jumbotron" id="score_keeper">
 	<h2><strong>ScrumLint score</strong> of <br><a href="https://github.com/hpi-swt2/event-und-raumplanung" target="_blank">event-und-raumplanung</a>:</h2>
-	<div id="radar_container">
-		<canvas id="radar" width="300px" height="300px"></canvas>
+	<div id="radar-container">
+		<canvas id="radar"></canvas>
 	</div>
 	<h1>{{ current_sprint_score|floatformat:2 }}<small>/100</span></small></h1>
 	{# Only show line chart if there are more than two datapoints, i.e. sprints #}

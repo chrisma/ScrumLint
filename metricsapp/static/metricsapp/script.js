@@ -16,10 +16,14 @@ $(document).ready(function() {
 	 */
 
 	/* Radar chart */
+	var radar_options = {
+		maintainAspectRatio: false,
+		responsive: true,
+	}
 	try {
 		var radar_ctx = $("#radar").get(0).getContext("2d");
 		// radar_data is filled in the template
-		var myRadarChart = new Chart(radar_ctx).Radar(radar_data);
+		var myRadarChart = new Chart(radar_ctx).Radar(radar_data, radar_options);
 	}
 	catch (e) {
 		console.error('Failed to draw radar chart.');

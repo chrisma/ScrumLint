@@ -90,7 +90,9 @@ canvas#overall {
     margin-top:15px;
 }
 
-#radar_container {
+#radar-container {
+    height: 300px;
+    width: 300px;
     position: absolute;
     top: 20px;
     right: 10%;
