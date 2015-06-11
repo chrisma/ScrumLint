@@ -1,5 +1,17 @@
 $(document).ready(function() {
 	/*
+	 + Helpers
+	  */
+
+	//Turn a string in the form "['foo', 'bar']"
+	//into a JS array
+	function toStrArray(str){
+		str = str.replace("['",'');
+		str = str.replace("']",'');
+		return str.split("', '")
+	}
+
+	/*
 	 * Draw charts
 	 */
 
@@ -15,23 +27,40 @@ $(document).ready(function() {
 	}
 
 
-	/* Line chart */
-	var line_options = {
+	/* Overall line chart */
+	$overall_canvas = $("#overall");
+	//These are also used by the individual metric charts
+	var sprint_labels = toStrArray($overall_canvas.data('labels'))
+	var overall_data = {
+		labels: sprint_labels,
+		datasets: [
+			{
+				fillColor: "rgba(151,151,151,0.2)",
+				strokeColor: $overall_canvas.data('color'),
+				pointColor: $overall_canvas.data('color'),
+				pointStrokeColor: "#fff",
+				pointHighlightFill: "#fff",
+				pointHighlightStroke: "rgba(151,187,205,1)",
+				data: $overall_canvas.data('scores')
+			}
+		]
+	};
+	var overall_options = {
 		datasetStrokeWidth : 4,
 		maintainAspectRatio: false,
 		responsive: true,
 		bezierCurveTension : 0.2
 	}
 	var line_ctx = $("#overall").get(0).getContext("2d");
-	//line_options is filled in the template
-	var myLineChart = new Chart(line_ctx).Line(line_data, line_options);
+	new Chart(line_ctx).Line(overall_data, overall_options);
 
+	/* Individual metrics line charts */
 	//Show the chart when a panel is fully opened
 	//shown.bs.collapse waits for CSS transitions to complete
 	$('.collapse').on('shown.bs.collapse', function () {
 		var $canvas = $(this).find('.metric-chart');
 		var chart_data = {
-			labels: line_data.labels,
+			labels: sprint_labels,
 			datasets: [
 				{
 					fillColor: "rgba(151,151,151,0.2)",

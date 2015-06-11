@@ -34,7 +34,7 @@
 	{# Only show line chart if there are more than two datapoints, i.e. sprints #}
 	{% if current_sprint_index > 1 %}
 		<div id="overall-chart-container">
-			<canvas id="overall"></canvas>
+			<canvas id="overall" data-labels="{{ chart_overall_labels }}" data-color="{{ current_team.label_color }}" data-scores="{{ chart_overall_data }}"></canvas>
 		</div>
 	{% endif %}
 </div>
@@ -98,22 +98,6 @@
 {% endif %}
 
 <script type="text/javascript">
-	var line_data = {
-		labels: {{ chart_overall_labels|safe }},
-		datasets: [
-			{
-				label: "Overall score",
-				fillColor: "rgba(151,151,151,0.2)",
-				strokeColor: "{{ current_team.label_color }}",
-				pointColor: "{{ current_team.label_color }}",
-				pointStrokeColor: "#fff",
-				pointHighlightFill: "#fff",
-				pointHighlightStroke: "rgba(151,187,205,1)",
-				data: {{ chart_overall_data }}
-			}
-		]
-	};
-
 	var radar_data = {
 		labels: {{ chart_radar_labels|safe }},
 		datasets: [
