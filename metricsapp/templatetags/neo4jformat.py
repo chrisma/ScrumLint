@@ -4,6 +4,11 @@ from django.utils.safestring import mark_safe
 
 register = template.Library()
 
+def trunc(string, length=75, end='..'):
+	if len(string) > length:
+		return string[:length] + end
+	return string
+
 @register.filter(name='format_commit', needs_autoescape=True)
 def format_commit(value, autoescape=True):
 
@@ -22,15 +27,16 @@ def format_commit(value, autoescape=True):
 		html = issue_link.format(
 			href=esc(issue['html_url']),
 			number=esc(issue['number']),
-			title=esc(issue['title'])
+			title=esc(trunc(issue['title']))
 		)
 		return mark_safe(html)
 
-	commit_link = '<a href="{href}" target="_blank">{commit_message}</a>'
+	commit_link = '<a href="{href}" target="_blank" title="{html_title}">{commit_message}</a>'
 	def commit_format(commit):
 		html = commit_link.format(
 			href=esc(commit['html_url']),
-			commit_message=esc(commit['commit_message'])
+			commit_message=esc(trunc(commit['commit_message'])),
+			html_title=esc(commit['commit_message'])
 		)
 		return mark_safe(html)
 
