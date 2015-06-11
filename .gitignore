@@ -1,3 +1,7 @@
+#ScrumLint
+#non-minified versions of scripts
+metricsapp/static/metricsapp/Chart.js
+
 #SQLite
 db.sqlite3
 
