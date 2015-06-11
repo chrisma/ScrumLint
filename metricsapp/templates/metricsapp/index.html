@@ -50,7 +50,7 @@
 
 			{% for metric, summary, previous in container.metrics|dictsort:"1.score" %}
 				<div class="panel panel-default">
-					<div class="panel-heading {{ summary.rating }}" role="tab" id="heading{{ container.categories.name|slugify }}{{ forloop.counter }}">
+					<div class="panel-heading score-{{ summary.score|floor_to_multiple:'10'|floatformat:'0' }}" role="tab" id="heading{{ container.categories.name|slugify }}{{ forloop.counter }}">
 						<h4 class="panel-title">
 							<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#{{ container.categories.name|slugify }}-{{ metric.name|slugify }}" aria-expanded="false" aria-controls="collapse{{ container.categories.name|slugify }}{{ forloop.counter }}">
 								<span class="metric-score">{{ summary.score|floatformat }}</span><small>/100</small> <span class="metric-name">{{ metric.name }}</span> <small>{{ metric.description }}</small>

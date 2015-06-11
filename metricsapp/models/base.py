@@ -71,19 +71,9 @@ class Metric(models.Model):
 		self.last_query = timezone.now()
 		self.save()
 
-	def score_rating(self, score):
-		if score <= 25:
-			return 'bad'
-		if score >= 80:
-			return 'good'
-		if score <= 60:
-			return 'improvement'
-		return 'ok'
-
 	def summary(self, *args, **kwargs):
 		score = self._calculate_score()
-		rating = self.score_rating(score)
-		return {'data':self.results, 'score':score, 'rating':rating}
+		return {'data':self.results, 'score':score}
 
 
 class SprintMetric(Metric):
@@ -139,8 +129,7 @@ class SprintMetric(Metric):
 	def summary(self, sprint, team, *args, **kwargs):
 		data = self._result_getter(sprint, team)
 		score = self._calculate_score(sprint, team)
-		rating = self.score_rating(score)
-		return {'data': data, 'score':score, 'rating':rating}
+		return {'data': data, 'score':score}
 
 	def get_value(self, sprint, team, column):
 		results = self._result_getter(sprint, team)

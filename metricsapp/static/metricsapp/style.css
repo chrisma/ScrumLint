@@ -48,20 +48,49 @@ span.metric-name {
 }
 
 /* Color header according to score*/
-.panel-heading.good{
-	background-color: lightgreen;
+/* http://www.perbang.dk/rgbgradient/ */
+.panel-heading.score-100 {
+    background-color: #72F372;
 }
 
-.panel-heading.ok{
-	/*background-color: lightblue;*/
+.panel-heading.score-90 {
+    background-color: #95F16D;
 }
 
-.panel-heading.bad{
-	background-color: lightpink;
+.panel-heading.score-80 {
+    background-color: #B8EF69;
 }
 
-.panel-heading.improvement{
-    background-color: #FFD290;
+.panel-heading.score-70 {
+    background-color: #DBED65;
+}
+
+.panel-heading.score-60 {
+    background-color: #FFEB61;
+}
+
+.panel-heading.score-50 {
+    background-color: #FFCF56;
+}
+
+.panel-heading.score-40 {
+    background-color: #FFB34C;
+}
+
+.panel-heading.score-30 {
+	background-color: #FF9842;
+}
+
+.panel-heading.score-20 {
+    background-color: #FF7C42;
+}
+
+.panel-heading.score-10 {
+    background-color: #FF6142;
+}
+
+.panel-heading.score-0 {
+    background-color: #FF4642;
 }
 
 /* Color trend arrows */
