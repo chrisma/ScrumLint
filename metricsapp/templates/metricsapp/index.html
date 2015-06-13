@@ -10,7 +10,7 @@
 
 {% block content %}
 
-<div class="well menu">
+<div class="well menu" id="sprint-nav">
 	<ul class="nav nav-pills">
 		{% for sprint in sprint_list %}
 			<li role="presentation" {% if current_sprint == sprint %}class="active"{% endif %}><a href="/sprint/{{ forloop.counter }}/team/{{ current_team.name }}">{{ sprint }}</a></li>
