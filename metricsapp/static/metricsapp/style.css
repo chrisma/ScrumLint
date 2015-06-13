@@ -33,9 +33,10 @@
 
 /* Custom elements*/
 #key {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);
+    text-align: center;
 }
 
 /* Stops non-floated divs with floating children from collapsing */
