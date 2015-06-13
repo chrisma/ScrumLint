@@ -4,7 +4,7 @@ $(document).ready(function() {
 	  */
 
 	//Turn a string in the form "['foo', 'bar']"
-	//into a JS array
+	//into a JS array of strings
 	function toStrArray(str){
 		str = str.replace("['",'');
 		str = str.replace("']",'');
@@ -99,7 +99,6 @@ $(document).ready(function() {
 		var ctx = $canvas.get(0).getContext("2d");
 		var chart = new Chart(ctx).Line(chart_data, chart_options);
 	});
-
 
 	/*
 	 * Metrics

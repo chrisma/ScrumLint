@@ -8,7 +8,8 @@
 	<link rel="stylesheet" type="text/css" href="{% static "metricsapp/style.css" %}">
 	<script type="text/javascript" src="{% static "metricsapp/Chart.min.js" %}"></script>
 	<script type="text/javascript" src="{% static "metricsapp/script.js" %}"></script>
-	<script type="text/javascript" src="{% static "metricsapp/jquery.bootstrap-growl.min.js" %}"></script>
+    {% block additional_head_includes %}
+    {% endblock %}
 {% endblock %}
 
 {% block bootstrap3_title %}
