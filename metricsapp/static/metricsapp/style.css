@@ -154,14 +154,22 @@ canvas#overall {
 }
 
 /* Bootstrap multiselect*/
-#team-select-container .btn-group {
-    width: 90% !important;
-}
-
 #team-select-container {
     padding: 3px;
 }
 
+#team-select-container form {
+    position: relative;
+}
+
+#team-select-container form .btn-group {
+    width: 100%;
+    padding-right: 113px;
+}
+
 #update {
     width: 110px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
 }
