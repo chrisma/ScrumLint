@@ -151,3 +151,12 @@ canvas#overall {
     top: 20px;
     right: 10%;
 }
+
+/* Bootstrap multiselect*/
+#team-select-container .btn-group {
+    width: 88% !important;
+}
+
+#team-select-container {
+    padding: 3px;
+}

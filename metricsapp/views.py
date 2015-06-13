@@ -65,9 +65,22 @@ def compare(request, sprint_index=None):
 		sprint_index = len(conf.sprints)
 	sprint_index = int(sprint_index)
 	sprint = conf.sprints[sprint_index-1]
+
+	all_teams = conf.teams
+	team_list = []
+	selected_teams = []
+	selected_team_names = request.GET.getlist('team',[])
+	for team in all_teams:
+		if team['name'] in selected_team_names:
+			t = (team, True)
+			selected_teams.append(team)
+		else:
+			t = (team, False)
+		team_list.append(t)
+
 	all_metrics = Metric.objects.filter(active=True).select_subclasses()
 	metric_list = []
-	for team in conf.teams:
+	for team in selected_teams:
 		scores = [Metric.rate(all_metrics, s, team) for s in conf.sprints[:sprint_index]]
 		metric_list.append( (team, scores) )
 
@@ -76,6 +89,7 @@ def compare(request, sprint_index=None):
 		'current_sprint': sprint,
 		'compare_chart_labels': list(conf.sprints[:sprint_index]),
 		'metric_list': metric_list,
+		'all_teams': team_list
 	}
 	return render(request, 'metricsapp/compare.html', context)
 

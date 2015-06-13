@@ -15,4 +15,17 @@ $(document).ready(function() {
 	catch (e) {
 		console.error('Failed to draw chart.', e);
 	}
+
+	/* Bootstrap multiselect */
+	$('#team-select').multiselect({
+		buttonWidth: '100%',
+		nonSelectedText: 'No teams selected',
+		nSelectedText: ' teams selected',
+		allSelectedText: 'All teams selected',
+		selectAllText: 'Select all teams',
+		includeSelectAllOption: true,
+		numberDisplayed: 10,
+		enableFiltering: true,
+		enableCaseInsensitiveFiltering: true
+	});
 });
