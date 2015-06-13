@@ -80,16 +80,6 @@ def format_commit(value, autoescape=True):
 def un_underscore(string):
 	return string.replace('_', ' ')
 
-# adapted from https://github.com/guillaumeesquevin/django-colors
-@register.filter(name='hex_to_rgb')
-def hex_to_rgb(hex, format_string='rgb({r},{g},{b})'):
-	"""Returns the RGB value of a hexadecimal color"""
-	hex = hex.replace('#','')
-	out = {	'r':int(hex[0:2], 16),
-			'g':int(hex[2:4], 16),
-			'b':int(hex[4:6], 16)}
-	return format_string.format(**out)
-
 @register.filter(name='floor_to_multiple')
 def floor_to_multiple(num, multiple=10):
 	"""Round down number to nearest multiple"""

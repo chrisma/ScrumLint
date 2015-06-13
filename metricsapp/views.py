@@ -74,7 +74,7 @@ def compare(request, sprint_index=None):
 	context = {
 		'sprint_list': conf.sprints,
 		'current_sprint': sprint,
-		'line_chart_labels': list(conf.sprints[:sprint_index]),
+		'compare_chart_labels': list(conf.sprints[:sprint_index]),
 		'metric_list': metric_list,
 	}
 	return render(request, 'metricsapp/compare.html', context)
@@ -96,6 +96,7 @@ def deactivate(request):
 		# active is defined on the base model.
 		metric = Metric.objects.get(id=metric_id)
 	except (ValueError, Metric.DoesNotExist):
+		print('Malformed request')
 		message = '400 - Malformed request.'
 		return HttpResponseBadRequest(message)
 	metric.active = False

@@ -1,7 +1,12 @@
 {% extends 'metricsapp/base.html' %}
 
 {% load bootstrap3 %}
-{% load neo4jformat %}
+{% load staticfiles %}
+{% load colors %}
+
+{% block additional_head_includes %}
+	<script type="text/javascript" src="{% static "metricsapp/compare.js" %}"></script>
+{% endblock %}
 
 {% block content %}
 <div class="page-header">
@@ -23,13 +28,13 @@
 		{% endfor %}
 	</div>
 	<div>
-		<canvas id="overall" width="100%" height="450px"></canvas>
+		<canvas id="compare" width="100%" height="450px"></canvas>
 	</div>
 </div>
 
 <script type="text/javascript">
-	var line_data = {
-		labels: {{ line_chart_labels|safe }},
+	var compare_data = {
+		labels: {{ compare_chart_labels|safe }},
 		datasets: [
 			{% for team, score_list in metric_list %}
 				{
