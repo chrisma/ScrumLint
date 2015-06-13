@@ -17,6 +17,7 @@ $(document).ready(function() {
 	}
 
 	/* Bootstrap multiselect */
+	// http://davidstutz.github.io/bootstrap-multiselect/
 	$('#team-select').multiselect({
 		buttonWidth: '100%',
 		nonSelectedText: 'No teams selected',
