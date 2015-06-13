@@ -19,12 +19,10 @@
 <div class="well menu">
 	<ul class="nav nav-pills">
 		{% for sprint in sprint_list %}
-			<li role="presentation" {% if current_sprint == sprint %}class="active"{% endif %}><a href="/compare/sprint/{{ forloop.counter }}">{{ sprint }}</a></li>
+			<li role="presentation" {% if current_sprint == sprint %}class="active"{% endif %}><a href="/compare/sprint/{{ forloop.counter }}?{{ current_parameters }}">{{ sprint }}</a></li>
 		{% endfor %}
 	</ul>
 </div>
-
-{{team_list}}
 
 <div class="well menu" id="team-select-container">
 	<form action="">

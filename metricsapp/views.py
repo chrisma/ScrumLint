@@ -90,7 +90,8 @@ def compare(request, sprint_index=None):
 		'current_sprint': sprint,
 		'compare_chart_labels': list(conf.sprints[:sprint_index]),
 		'metric_list': metric_list,
-		'all_teams': team_list
+		'all_teams': team_list,
+		'current_parameters': request.GET.urlencode()
 	}
 	return render(request, 'metricsapp/compare.html', context)
 
