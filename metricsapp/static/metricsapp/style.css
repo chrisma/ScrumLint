@@ -26,6 +26,11 @@
     background-color: #fff;
 }
 
+.metric-btn {
+    float: right;
+    margin-right: 5px;
+}
+
 /* Custom elements*/
 #key {
     font-size: 24px;
