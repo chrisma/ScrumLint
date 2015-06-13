@@ -25,7 +25,7 @@
 			<li role="presentation" {% if current_team.name == team.name %}class="active"{% endif %}><a href="/sprint/{{ current_sprint_index }}/team/{{ team.name }}" {% if current_team.name == team.name %}style="background-color: {{ team.label_color }}"{% endif %}>{{ team.name }}</a></li>
 		{% endfor %}
 	</ul>
-	<a href="/compare" id="compare-teams-btn" class="btn btn-info" role="button"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span> Compare teams</a>
+	<a href="/compare/sprint/{{ current_sprint_index }}" id="compare-teams-btn" class="btn btn-info" role="button"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span> Compare teams</a>
 	<div class="spacer"></div>
 </div>
 
