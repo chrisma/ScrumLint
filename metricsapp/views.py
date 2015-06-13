@@ -67,9 +67,10 @@ def compare(request, sprint_index=None):
 	sprint = conf.sprints[sprint_index-1]
 
 	all_teams = conf.teams
+	all_team_names = [t['name'] for t in all_teams]
 	team_list = []
 	selected_teams = []
-	selected_team_names = request.GET.getlist('team',[])
+	selected_team_names = request.GET.getlist('team', all_team_names)
 	for team in all_teams:
 		if team['name'] in selected_team_names:
 			t = (team, True)
