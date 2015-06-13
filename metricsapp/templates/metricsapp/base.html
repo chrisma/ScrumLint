@@ -5,8 +5,10 @@
 {% load staticfiles %}
 
 {% block bootstrap3_extra_head %}
+	<!-- Base includes -->
 	<link rel="stylesheet" type="text/css" href="{% static "metricsapp/style.css" %}">
 	<script type="text/javascript" src="{% static "metricsapp/Chart.min.js" %}"></script>
+	<!-- Additional includes -->
     {% block additional_head_includes %}
     {% endblock %}
 {% endblock %}
