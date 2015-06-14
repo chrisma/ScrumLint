@@ -66,7 +66,7 @@
 							<div class="well">
 								<p>{{ metric.explanation }}</p>
 								<p>Importance: <strong>{{ metric.get_severity_display }}</strong> (influences the ScrumLint score with a factor of {{ metric.severity }})
-								<a href="#" class="btn btn-warning btn-xs metric-btn deactivate" role="button" data-metric-id="{{ metric.id }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Deactivate metric</a>
+								<button type="button" class="btn btn-warning btn-xs metric-btn" data-toggle="modal" data-target="#deactive-metric-modal" data-metric-id="{{ metric.id }}" data-metric-name="{{ metric.name }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Deactivate metric</button>
 								<a href="{% url 'admin:metricsapp_metric_change' metric.id %}" class="btn btn-default btn-xs metric-btn" role="button"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit metric</a>
 							</div>
 							<table class="table">
@@ -102,5 +102,29 @@
 {% else %}
 	<p>No metrics are available.</p>
 {% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="deactive-metric-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="modal-label">Confirm</h4>
+			</div>
+			<div class="modal-body">
+				<p>
+					The metric <strong><span id="modal-metric-name">Forgotten Ones<span></strong> will be deactivated.<br>
+					It will no longer influence the ScrumLint score.<br>
+					<i>However, It can be reactivated later in the <a href="admin/metricsapp/metric/" target="_blank">administrative view</a></i>.<br>
+				</p>
+				<p>Are you sure?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" id="deactivate-btn">Deactivate</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 {% endblock %}{# content#}

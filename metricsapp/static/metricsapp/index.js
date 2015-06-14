@@ -119,35 +119,27 @@ $(document).ready(function() {
 	});
 
 	/* Deactivate metrics */
-	function remove_panel($panel) {
-		//the panel we're referencing in the hash is being removed
-		history.pushState(null, null, '#')
-		animation_time = 800;
-		$panel.slideUp(animation_time);
-		var message = "'" + name + "'<br> deactivated";
-		var notify = function(){
-			//https://github.com/ifightcrime/bootstrap-growl/
-			$.bootstrapGrowl(message, {
-				type: 'success',
-				width: 300,
-				delay: 3000,
-			});
-		};
-		//Show notification shortly before the animation ends
-		setTimeout(notify, animation_time-200);
-	}
-
-	$('a.deactivate').click(function(event){
-		// stops the href="#" from jumping to the top of the page
-		event.preventDefault();
-		$panel = $(this).closest('div.panel-default');
-		name = $panel.find('.metric-name').text();
-		var sure = confirm("This will deactivate the metric \n'" +
-			name + "'. \n" +
-			"It can be reactivated in the administrative view.\n" +
-			"Are you sure?");
-		if (!sure) {return}
-		var metric_id = $(this).data('metric-id');
+	function deactivate(metric_id, $panel) {
+		//Callback on successfull POST
+		function remove_panel($panel) {
+			//the panel we're referencing in the hash is being removed
+			history.pushState(null, null, '#')
+			animation_time = 800;
+			$panel.slideUp(animation_time);
+			name = $panel.find('.metric-name').text();
+			var message = "'" + name + "'<br> deactivated";
+			var notify = function(){
+				//https://github.com/ifightcrime/bootstrap-growl/
+				$.bootstrapGrowl(message, {
+					type: 'success',
+					width: 300,
+					delay: 3000,
+				});
+			};
+			//Show notification shortly before the animation ends
+			setTimeout(notify, animation_time-200);
+		}
+		//AJAJ call
 		$.ajax({
 			type: "POST",
 			url: '/deactivate',
@@ -156,6 +148,19 @@ $(document).ready(function() {
 				remove_panel($panel);
 			},
 			dataType: 'json'
+		});
+	}
+
+	$('#deactive-metric-modal').on('show.bs.modal', function (event) {
+		var $button = $(event.relatedTarget); // Button that triggered the modal
+		var metric_id = $button.data('metric-id');
+		var metric_name = $button.data('metric-name');
+		var $modal = $(this);
+		$modal.find('#modal-metric-name').text(metric_name);
+		$panel = $button.closest('div.panel-default');
+		$modal.find('#deactivate-btn').one('click', function(e){
+			$modal.modal('hide');
+			deactivate(metric_id, $panel);
 		});
 	});
 
