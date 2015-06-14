@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Metric, Category
 import json
+from django.template.defaultfilters import pluralize
 
 admin.site.register(Category)
 
@@ -33,6 +34,8 @@ class MetricAdmin(admin.ModelAdmin):
 			'fields': ['query', 'endpoint', 'last_query', 'formatted_results']
 		}),
 	]
+	# Register custom action
+	actions = ['activate']
 
 	def list_of_categories(self, metric):
 		return ', '.join([c.name for c in metric.categories.all()])
@@ -42,3 +45,18 @@ class MetricAdmin(admin.ModelAdmin):
 		return '<pre>{}</pre>'.format(pretty_json)
 	formatted_results.short_description = "results"
 	formatted_results.allow_tags = True
+
+	def show_update_message(self, request, queryset):
+		count = queryset.count()
+		message = '{amount} {model}{s} {plural} updated.'.format(
+			amount = count,
+			model = queryset.model.__name__.lower(),
+			s = pluralize(count),
+			plural = pluralize(count, 'was,were')
+		)
+		self.message_user(request, message)
+
+	def activate(self, request, queryset):
+		queryset.update(active=True)
+		self.show_update_message(request, queryset)
+	activate.short_description = "Mark selected metrics as active"
