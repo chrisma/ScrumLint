@@ -17,11 +17,11 @@
     margin-top: 20px;
 }
 
-/* Main content */
-#accordion {
+.container {
     margin-bottom: 50px;
 }
 
+/* Main content */
 .jumbotron {
     background-color: #fff;
 }
