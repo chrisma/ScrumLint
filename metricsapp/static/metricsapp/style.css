@@ -146,6 +146,10 @@ so that children can be position absolutely within it */
     height: 150px;
 }
 
+.metric-chart-container.large {
+    height: 250px;
+}
+
 canvas#overall {
     margin-top:15px;
 }

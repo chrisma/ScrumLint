@@ -73,7 +73,7 @@ def compare(request, sprint_index=None):
 	else:
 		current_teams = all_teams
 
-	# Line chart of ScrumLint score over sprints of all teams
+	# Line chart of ScrumLint score over sprints of selected teams
 	all_metrics = Metric.objects.filter(active=True).select_subclasses()
 	line_chart_data = []
 	for team in current_teams:
@@ -82,11 +82,20 @@ def compare(request, sprint_index=None):
 
 	# Radar chart of categories for each team
 	categories = [c for c in Category.objects.all() if not c.is_empty()]
-	radar_data = []
+	radar_chart_data = []
 	for team in current_teams:
 		cat_scores = [c.rate(sprint, team) for c in categories]
-		radar_data.append( (team, cat_scores ) )
+		radar_chart_data.append( (team, cat_scores ) )
 	category_names = [c.name for c in categories]
+
+	# Line charts of individual metrics over sprints of selected teams
+	metrics_chart_data = []
+	for metric in all_metrics:
+		team_scores = []
+		for team in current_teams:
+			metrics_scores = [metric.summary(s,team)['score'] for s in conf.sprints[:sprint_index]]
+			team_scores.append( (team, metrics_scores) )
+		metrics_chart_data.append( (metric, team_scores) )
 
 	context = {
 		'sprint_list': conf.sprints,
@@ -97,8 +106,9 @@ def compare(request, sprint_index=None):
 		'selected_teams': current_teams,
 		'line_chart_data': line_chart_data,
 		'line_chart_labels': list(conf.sprints[:sprint_index]),
-		'radar_chart_data': radar_data,
+		'radar_chart_data': radar_chart_data,
 		'radar_chart_labels': category_names,
+		'metrics_chart_data': metrics_chart_data,
 	}
 	return render(request, 'metricsapp/compare.html', context)
 

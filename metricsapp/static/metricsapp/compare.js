@@ -34,6 +34,28 @@ $(document).ready(function() {
 		console.error('Failed to draw chart.', e);
 	}
 
+	/* Individual metrics line charts */
+	var chart_options = {
+		datasetStrokeWidth : 3,
+		maintainAspectRatio: false,
+		responsive: true,
+		bezierCurveTension : 0.2
+	}
+	$individual_canvases = $(".individual-compare");
+	$individual_canvases.each(function(){
+		var data_var_name = $(this).data('ref');
+		var individual_data = window[data_var_name];
+
+		try {
+			var individual_ctx = this.getContext("2d");
+			//radar_data is filled in the template
+			new Chart(individual_ctx).Line(individual_data, chart_options);
+		}
+		catch (e) {
+			console.error('Failed to draw chart.', e);
+		}
+	});
+
 	/* Bootstrap multiselect */
 	// http://davidstutz.github.io/bootstrap-multiselect/
 	$('#team-select').multiselect({

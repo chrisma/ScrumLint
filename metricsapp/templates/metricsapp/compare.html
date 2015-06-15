@@ -3,6 +3,7 @@
 {% load bootstrap3 %}
 {% load staticfiles %}
 {% load colors %}
+{% load neo4jformat %}
 
 {% block additional_head_includes %}
 	<script type="text/javascript" src="{% static "metricsapp/compare.js" %}"></script>
@@ -66,6 +67,21 @@
 	</div>
 {% endif %}
 
+{# Only show line chart if there are more than two datapoints, i.e. sprints #}
+{% if current_sprint_index > 1 %}
+	<div class="page-header">
+		<h3>Comparison by individual metric</h3>
+	</div>
+	{% for metric, previous in metrics_chart_data %}
+		<div class="page-header">
+			<h4><a name="{{ metric.name|slugify }}" href="#{{ metric.name|slugify }}">{{ metric.name }}</a> <small>{{ metric.description }}</small></h4>
+		</div>
+		<div class="metric-chart-container large">
+			<canvas class="individual-compare" data-ref="data_{{ metric.name|to_js_var }}"></canvas>
+		</div>
+	{% endfor %}
+{% endif %}
+
 <script type="text/javascript">
 	var line_data = {
 		labels: {{ line_chart_labels|safe }},
@@ -104,6 +120,26 @@
 			{% endfor %}
 		]
 	};
+
+	{% for metric, previous in metrics_chart_data %}
+		var data_{{ metric.name|to_js_var }} = {
+			labels: {{ line_chart_labels|safe }},
+			datasets: [
+				{% for team, scores in previous %}
+					{
+						label: "{{ team.name }}",
+						fillColor: "rgba(1,1,1,0.0)",
+						strokeColor: "{{ team.label_color }}",
+						pointColor: "{{ team.label_color }}",
+						pointStrokeColor: "#fff",
+						pointHighlightFill: "#fff",
+						pointHighlightStroke: "rgba(151,187,205,1)",
+						data: {{ scores }}
+					},
+				{% endfor %}
+			]
+		};
+	{% endfor %}
 </script>
 
 {% endblock %}{# content#}

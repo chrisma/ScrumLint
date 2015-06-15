@@ -1,6 +1,7 @@
 from django import template
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
+from django.template.defaultfilters import slugify
 
 register = template.Library()
 
@@ -84,3 +85,10 @@ def floor_to_multiple(num, multiple=10):
 	num = float(num)
 	multiple = float(multiple)
 	return num - (num % multiple)
+
+@register.filter(name='to_js_var')
+def to_js_var(string):
+	"""Convert string to valid Javascript variable name"""
+	string = slugify(str(string))
+	string = string.replace('-','_')
+	return string
