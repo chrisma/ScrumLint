@@ -17,6 +17,9 @@ class Category(models.Model):
 	def __str__(self):
 		return self.name
 
+	def is_empty(self):
+		return not bool(self.metric_set.filter(active=True).count())
+
 	class Meta:
 		ordering = ('name',)
 		verbose_name_plural = "categories"
