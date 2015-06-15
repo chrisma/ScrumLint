@@ -41,7 +41,9 @@ class MetricAdmin(admin.ModelAdmin):
 		return ', '.join([c.name for c in metric.categories.all()])
 
 	def last_updated(self, metric):
-		return timesince(metric.last_query)
+		if metric.last_query:
+			return timesince(metric.last_query)
+		return 'never'
 
 	def formatted_results(self, instance):
 		pretty_json = json.dumps(instance.results, indent=2, sort_keys=True)
