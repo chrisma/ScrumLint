@@ -297,13 +297,28 @@ def import_data():
     metricsapp_tutor_scores_1 = TutorScores()
     metricsapp_tutor_scores_1.name = "Tutor Scores"
     metricsapp_tutor_scores_1.description = 'tutors evaluating sprint meetings.'
-    metricsapp_tutor_scores_1.explanation = 'Tutors rate meetings on two levels: dedication and progress. The former signifies how much effort was put into implementing, customizing and trying out new Scrum practices, the latter how well the team works and has internalized Scrum values..\r\n'
+    metricsapp_tutor_scores_1.explanation = 'Tutors rate meetings on two levels: dedication and progress. The former signifies how much effort was put into implementing, customizing and trying out new Scrum practices, the latter how well the team works and has internalized Scrum values.\r\n'
     metricsapp_tutor_scores_1.query = 'MATCH (m:GithubMilestone)<-[:milestone]-(n:Meeting) WHERE m.title = "{sprint}" AND n.team = "{team}" WITH n, (n.dedication+n.progress)/2.0 as AveragedRating RETURN n.name as Meetings, n.dedication as Dedication, n.progress as Progress, AveragedRating ORDER BY AveragedRating ASC'
     metricsapp_tutor_scores_1.endpoint = 'http://192.168.30.196:7478/db/data/transaction/commit'
     metricsapp_tutor_scores_1.active = True
     metricsapp_tutor_scores_1.severity = 1.0
     metricsapp_tutor_scores_1 = importer.save_or_locate(metricsapp_tutor_scores_1)
     metricsapp_tutor_scores_1.categories.add(metricsapp_category_5)
+
+    # Processing model: PercentMetric
+
+    from metricsapp.models import PercentMetric
+
+    metricsapp_percent_metric_1 = PercentMetric()
+    metricsapp_percent_metric_1.name = "Lottie and Lisa"
+    metricsapp_percent_metric_1.description = 'Issues which are suspected duplicates.'
+    metricsapp_percent_metric_1.explanation = 'Issues with comments that point to them being duplicates. User stories that duplicate features of previous user stories can lead to features being implemented multiple times by different teams.\r\n'
+    metricsapp_percent_metric_1.query = 'MATCH (l:GithubLabel)-[:labels]-(i:GithubIssue)-[:milestone]->(m:GithubMilestone), (ic:GithubIssueComment) WHERE ic.issue_url=replace("https://api.github.com/repos/hpi-swt2/event-und-raumplanung/issues/{{number}}", "{{number}}", str(i.number)) AND ic.body=~"(?i).*duplicate.*" AND l.name="{label}" AND m.title="{sprint}" WITH count(DISTINCT i) as AmountOfMarkedDuplicates, collect(i) as Issues,l MATCH (o:GithubLabel)-[:labels]-(j:GithubIssue)-[:milestone]->(n:GithubMilestone) WHERE o.name="{label}" AND n.title="{sprint}" RETURN l.name as Team, AmountOfMarkedDuplicates, Issues, count(j) as Total, (AmountOfMarkedDuplicates*1.0)/count(j) as Percentage'
+    metricsapp_percent_metric_1.endpoint = 'http://192.168.30.196:7478/db/data/transaction/commit'
+    metricsapp_percent_metric_1.active = True
+    metricsapp_percent_metric_1.severity = 0
+    metricsapp_percent_metric_1 = importer.save_or_locate(metricsapp_percent_metric_1)
+    metricsapp_percent_metric_1.categories.add(metricsapp_category_1)
 
     print()
     print("DONE The metrics are now in the database.")
