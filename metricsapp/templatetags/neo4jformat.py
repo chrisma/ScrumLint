@@ -42,8 +42,6 @@ def format_commit(value, autoescape=True):
 
 	def float_format(f):
 		formatted = "{0:.2f}".format(f)
-		if formatted == '0.00':
-			return '0'
 		if formatted.endswith('.00'):
 			return formatted[:-3]
 		return formatted
