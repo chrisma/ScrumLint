@@ -66,30 +66,24 @@ def compare(request, sprint_index=None):
 	sprint_index = int(sprint_index)
 	sprint = conf.sprints[sprint_index-1]
 
+	selected_team_names = request.GET.getlist('team', [])
 	all_teams = conf.teams
-	all_team_names = [t['name'] for t in all_teams]
-	team_list = []
-	selected_teams = []
-	selected_team_names = request.GET.getlist('team', all_team_names)
-	for team in all_teams:
-		if team['name'] in selected_team_names:
-			t = (team, True)
-			selected_teams.append(team)
-		else:
-			t = (team, False)
-		team_list.append(t)
+	if selected_team_names:
+		current_teams = [t for t in all_teams if t['name'] in selected_team_names]
+	else:
+		current_teams = all_teams
 
+	# Line chart of ScrumLint score over sprints of all teams
 	all_metrics = Metric.objects.filter(active=True).select_subclasses()
-	metric_list = []
-	for team in selected_teams:
+	line_chart_data = []
+	for team in current_teams:
 		scores = [Metric.rate(all_metrics, s, team) for s in conf.sprints[:sprint_index]]
-		metric_list.append( (team, scores) )
+		line_chart_data.append( (team, scores) )
 
-	# Radar charts of categories for each team
+	# Radar chart of categories for each team
 	categories = [c for c in Category.objects.all() if not c.is_empty()]
-	requested_teams = [t for t in conf.teams if t['name'] in selected_team_names]
 	radar_data = []
-	for team in requested_teams:
+	for team in current_teams:
 		cat_scores = [c.rate(sprint, team) for c in categories]
 		radar_data.append( (team, cat_scores ) )
 	category_names = [c.name for c in categories]
@@ -98,13 +92,13 @@ def compare(request, sprint_index=None):
 		'sprint_list': conf.sprints,
 		'current_sprint': sprint,
 		'current_sprint_index': sprint_index,
-		'compare_chart_labels': list(conf.sprints[:sprint_index]),
-		'metric_list': metric_list,
-		'all_teams': team_list,
+		'team_list': all_teams,
 		'current_parameters': request.GET.urlencode(),
-		'requested_teams': requested_teams,
-		'radar_data': radar_data,
-		'radar_labels': category_names,
+		'selected_teams': current_teams,
+		'line_chart_data': line_chart_data,
+		'line_chart_labels': list(conf.sprints[:sprint_index]),
+		'radar_chart_data': radar_data,
+		'radar_chart_labels': category_names,
 	}
 	return render(request, 'metricsapp/compare.html', context)
 

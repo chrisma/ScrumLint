@@ -10,7 +10,7 @@ $(document).ready(function() {
 	try {
 		var compare_ctx = $compare_canvas.get(0).getContext("2d");
 		//compare_data is filled in the template
-		new Chart(compare_ctx).Line(compare_data, compare_options);
+		new Chart(compare_ctx).Line(line_data, compare_options);
 	}
 	catch (e) {
 		console.error('Failed to draw chart.', e);
