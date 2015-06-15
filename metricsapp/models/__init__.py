@@ -8,3 +8,4 @@ from .speedy_prs import *
 from .personal_code_ownership import *
 from .monster_stories import *
 from .untested_complexity import *
+from .tutor_scores import *

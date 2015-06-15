@@ -150,6 +150,10 @@ def import_data():
     metricsapp_category_4.name = 'XP Practices'
     metricsapp_category_4 = importer.save_or_locate(metricsapp_category_4)
 
+    metricsapp_category_5 = Category()
+    metricsapp_category_5.name = 'Teaching team scores'
+    metricsapp_category_5 = importer.save_or_locate(metricsapp_category_5)
+
     # Processing model: DailyUserStoryThroughput
 
     from metricsapp.models.daily_user_story_throughput import DailyUserStoryThroughput
@@ -285,6 +289,21 @@ def import_data():
     metricsapp_untested_complexity_1.severity = 0.5
     metricsapp_untested_complexity_1 = importer.save_or_locate(metricsapp_untested_complexity_1)
     metricsapp_untested_complexity_1.categories.add(metricsapp_category_2)
+
+    # Processing model: TutorScores
+
+    from metricsapp.models import TutorScores
+
+    metricsapp_tutor_scores_1 = TutorScores()
+    metricsapp_tutor_scores_1.name = "Tutor Scores"
+    metricsapp_tutor_scores_1.description = 'tutors evaluating sprint meetings.'
+    metricsapp_tutor_scores_1.explanation = 'Tutors rate meetings on two levels: dedication and progress. The former signifies how much effort was put into implementing, customizing and trying out new Scrum practices, the latter how well the team works and has internalized Scrum values..\r\n'
+    metricsapp_tutor_scores_1.query = 'MATCH (m:GithubMilestone)<-[:milestone]-(n:Meeting) WHERE m.title = "{sprint}" AND n.team = "{team}" WITH n, (n.dedication+n.progress)/2.0 as AveragedRating RETURN n.name as Meetings, n.dedication as Dedication, n.progress as Progress, AveragedRating ORDER BY AveragedRating ASC'
+    metricsapp_tutor_scores_1.endpoint = 'http://192.168.30.196:7478/db/data/transaction/commit'
+    metricsapp_tutor_scores_1.active = True
+    metricsapp_tutor_scores_1.severity = 1.0
+    metricsapp_tutor_scores_1 = importer.save_or_locate(metricsapp_tutor_scores_1)
+    metricsapp_tutor_scores_1.categories.add(metricsapp_category_5)
 
     print()
     print("DONE The metrics are now in the database.")
