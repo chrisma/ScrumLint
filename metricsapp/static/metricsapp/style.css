@@ -31,11 +31,16 @@
     margin-right: 5px;
 }
 
+.key span.label {
+    font-size: 95%;
+}
+
 /* Custom elements*/
-#key {
-    font-size: 20px;
-    font-weight: bold;
-    text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);
+#radar-key {
+    position: absolute;
+}
+
+#line-key {
     text-align: center;
 }
 

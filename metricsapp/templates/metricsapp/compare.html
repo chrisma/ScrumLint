@@ -35,13 +35,30 @@
 	</form>
 </div>
 
-<div class="jumbotron" id="score_keeper">
+<div class="page-header">
+	<h3>Comparison by category</h3>
+</div>
+<div>
+	<div class="key">
+		{% for team in requested_teams %}
+			<span class="label label-default" style="background-color:{{ team.label_color }};">{{ team.name }}</span>
+		{% endfor %}
+	</div>
+	<div id="compare-radar-container">
+		<canvas id="compare-radar" width="500px" height="500px"></canvas>
+	</div>
+</div>
+
+<div class="page-header">
+	<h3>Comparison by ScrumLint score</h3>
+</div>
+<div id="score_keeper">
 	<div>
 		<canvas id="compare" width="100%" height="450px"></canvas>
 	</div>
-	<div id="key">
-		{% for team, score_list in metric_list %}
-			<span style="color: {{ team.label_color }}">{{ team.name }}</span>
+	<div class="key" id="line-key">
+		{% for team in requested_teams %}
+			<span class="label label-default" style="background-color:{{ team.label_color }};">{{ team.name }}</span>
 		{% endfor %}
 	</div>
 </div>
@@ -61,6 +78,25 @@
 					pointHighlightFill: "#fff",
 					pointHighlightStroke: "rgba(151,187,205,1)",
 					data: {{ score_list }}
+				},
+			{% endfor %}
+		]
+	};
+
+	var radar_data = {
+		labels: {{ radar_labels|safe }},
+		datasets: [
+			{% for team, scores in radar_data %}
+				{
+					label: "{{ team.name }}",
+					// fillColor: "rgba(1,1,1,0.0)",
+					fillColor: "{{ team.label_color|hex_to_rgb:'rgba({r},{g},{b},0.1)' }}",
+					strokeColor: "{{ team.label_color }}",
+					pointColor: "{{ team.label_color }}",
+					pointStrokeColor: "#fff",
+					pointHighlightFill: "#fff",
+					pointHighlightStroke: "rgba(151,187,205,1)",
+					data: {{ scores }}
 				},
 			{% endfor %}
 		]

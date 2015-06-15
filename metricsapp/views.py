@@ -85,13 +85,25 @@ def compare(request, sprint_index=None):
 		scores = [Metric.rate(all_metrics, s, team) for s in conf.sprints[:sprint_index]]
 		metric_list.append( (team, scores) )
 
+	# Radar charts of categories for each team
+	categories = [c for c in Category.objects.all() if not c.is_empty()]
+	requested_teams = [t for t in conf.teams if t['name'] in selected_team_names]
+	radar_data = []
+	for team in requested_teams:
+		cat_scores = [c.rate(sprint, team) for c in categories]
+		radar_data.append( (team, cat_scores ) )
+	category_names = [c.name for c in categories]
+
 	context = {
 		'sprint_list': conf.sprints,
 		'current_sprint': sprint,
 		'compare_chart_labels': list(conf.sprints[:sprint_index]),
 		'metric_list': metric_list,
 		'all_teams': team_list,
-		'current_parameters': request.GET.urlencode()
+		'current_parameters': request.GET.urlencode(),
+		'requested_teams': requested_teams,
+		'radar_data': radar_data,
+		'radar_labels': category_names,
 	}
 	return render(request, 'metricsapp/compare.html', context)
 
