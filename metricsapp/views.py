@@ -97,6 +97,7 @@ def compare(request, sprint_index=None):
 	context = {
 		'sprint_list': conf.sprints,
 		'current_sprint': sprint,
+		'current_sprint_index': sprint_index,
 		'compare_chart_labels': list(conf.sprints[:sprint_index]),
 		'metric_list': metric_list,
 		'all_teams': team_list,
