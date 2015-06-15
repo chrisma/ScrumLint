@@ -52,10 +52,14 @@ class Metric(models.Model):
 	HIGH = 1.5
 	NORMAL = 1.0
 	LOW = 0.5
+	VERY_LOW = 0.2
+	INFO = 0
 	SEVERITY_CHOICES = (
 		(HIGH, 'High'),
 		(NORMAL, 'Normal'),
 		(LOW, 'Low'),
+		(VERY_LOW, 'Very Low'),
+		(INFO, 'Informational'),
 	)
 	severity = models.FloatField(choices=SEVERITY_CHOICES,
 								default=NORMAL)
