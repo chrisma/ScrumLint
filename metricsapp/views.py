@@ -88,7 +88,7 @@ def compare(request, sprint_index=None):
 	for team in current_teams:
 		cat_scores = [c.rate(sprint, team) for c in categories]
 		radar_chart_data.append( (team, cat_scores ) )
-	category_names = [c.name for c in categories]
+	category_names = [str(c.name) for c in categories]
 
 	# Line charts of individual metrics over sprints of selected teams
 	metrics_chart_data = []
