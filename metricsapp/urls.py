@@ -10,4 +10,6 @@ urlpatterns = [
 	url(r'^compare$', views.compare),
 	url(r'^compare/sprint/(?P<sprint_index>[0-9]+)$', views.compare, name='compare'),
 	url(r'^deactivate$', views.deactivate, name='deactivate'),
+	url(r'^latest-sprint-badge/$', views.latest_sprint_badge),
+	url(r'^latest-sprint-badge/team/(?P<team_name>\w+)$', views.latest_sprint_badge, name='badge'),
 ]

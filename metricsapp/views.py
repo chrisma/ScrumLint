@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from .models import Metric, Category
 from .settings import conf
+from .templatetags.neo4jformat import floor_to_multiple
+import requests
 
-from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponse
 
 def group_by(queryset, attrib):
 	result = []
@@ -135,3 +137,29 @@ def deactivate(request):
 	metric.active = False
 	metric.save()
 	return JsonResponse({'success': True})
+
+def latest_sprint_badge(request, team_name=None):
+	all_metrics = Metric.objects.filter(active=True).select_subclasses()
+	last_sprint = conf.sprints[-1]
+	if team_name is None:
+		sum_score = 0
+		for t in conf.teams:
+			sum_score += Metric.rate(all_metrics, last_sprint, t)
+		score = sum_score/len(conf.teams)
+		extra_text = ''
+	else:
+		team = [t for t in conf.teams if t["name"] == team_name][0]
+		score = Metric.rate(all_metrics, last_sprint, team)
+		extra_text = '_--_' + team_name
+	
+	colors = {
+		100: 'brightgreen', 80: 'green', 60: 'yellowgreen',
+		40: 'yellow', 20: 'orange', 0: 'red'}
+	current_color = colors[floor_to_multiple(score, multiple=20)]
+
+	shields_io_url = 'https://img.shields.io/badge/{subject}-{status}-{color}.svg'
+	subject = 'ScrumLint' + extra_text
+	badge_url = shields_io_url.format(subject=subject, status=score, color=current_color)
+	image = requests.get(badge_url)
+	
+	return HttpResponse(image.content, content_type="image/svg+xml")
