@@ -157,7 +157,7 @@ def latest_sprint_badge(request, team_name=None):
 		40: 'yellow', 20: 'orange', 0: 'red'}
 	current_color = colors[floor_to_multiple(score, multiple=20)]
 
-	shields_io_url = 'https://img.shields.io/badge/{subject}-{status}-{color}.svg'
+	shields_io_url = 'https://img.shields.io/badge/{subject}-{status:.1f}-{color}.svg'
 	subject = 'ScrumLint' + extra_text
 	badge_url = shields_io_url.format(subject=subject, status=score, color=current_color)
 	image = requests.get(badge_url)
