@@ -1,5 +1,9 @@
 # ScrumLint
 
+ScrumLint is a "linter" for agile processes. It aims at supporting a development team in adopting or adhering to agile practices. ScrumLint identifies and quantifies violations, instances where the executed process deviates from the defined one, as mandated by Scrum or agile best practices.
+
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.45319.svg)](http://dx.doi.org/10.5281/zenodo.45319)
+
 ## Setup
 * Install the dependencies (preferably in a [virtualenv](https://pypi.python.org/pypi/virtualenv/))
 
