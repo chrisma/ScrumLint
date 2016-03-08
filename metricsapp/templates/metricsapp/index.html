@@ -1,7 +1,7 @@
 {% extends 'metricsapp/base.html' %}
 
 {% load bootstrap3 %}
-{% load neo4jformat %}
+{% load artifactformat %}
 {% load staticfiles %}
 
 {% block additional_head_includes %}
@@ -79,7 +79,7 @@
 								{% for row in summary.data.rows %}
 									<tr>
 										{% for data in row %}
-											<td>{{ data|format_commit }}</td>
+											<td>{{ data|format_artifact }}</td>
 										{% endfor %}
 									</tr>
 								{% empty %}
