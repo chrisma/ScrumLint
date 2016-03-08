@@ -222,7 +222,7 @@ def import_data():
     metricsapp_commitsperdev_1 = CommitsPerDev()
     metricsapp_commitsperdev_1.name = "Don't Be Afraid of Commitment"
     metricsapp_commitsperdev_1.description = 'Amount of commits per Developer.'
-    metricsapp_commitsperdev_1.explanation = '"Commit early, commit often" is an important mantra when developing in large teams. It allows coworkers to build on functionality and makes version control easier.\r\n'
+    metricsapp_commitsperdev_1.explanation = '"Commit early, commit often" is a helpful slogan when developing in large teams.\r\nIn the words of Jeff Atwood (of StackOverflow fame) "if the code isn\'t checked into source control, it doesn\'t exist" <a href="http://blog.codinghorror.com/check-in-early-check-in-often/">[Atwood, 2008]</a>. It allows coworkers to build on functionality, makes version control easier and can help prevent "Integration Hell" <a href="http://c2.com/cgi/wiki?IntegrationHell">[Jeffries]</a> further down the line.'
     metricsapp_commitsperdev_1.query = 'MATCH (m:GithubMilestone)-[:milestone]-(c:GithubCommit)-[:author]-(u:GithubUser) WHERE u.team = "{team}" and m.title = "{sprint}" and u.role <> "org" and c.merge = FALSE WITH count(c) AS Commits, avg(c.total) AS AverageChangedLines MATCH (u:GithubUser) WHERE u.role <> "org" AND u.team = "{team}" RETURN Commits, count(u) as devs, AverageChangedLines, round(100 * (toFloat(Commits) / count(u))) / 100 as CommitsperDev'
     metricsapp_commitsperdev_1.endpoint = 'http://192.168.30.233:7478/db/data/transaction/commit'
     metricsapp_commitsperdev_1.active = True
