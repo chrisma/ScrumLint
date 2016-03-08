@@ -41,10 +41,12 @@ def _format_commit(commit, esc):
 	"""Format a Github commit object for display.
 	esc : escape function
 	"""
-	commit_link = '<a href="{href}" target="_blank" title="{html_title}">{commit_message}</a>'
+	commit_link = '<a href="{href}" target="_blank" title="{html_title} | {author}">[{sha}] {commit_message}</a>'
 	commit_html = commit_link.format(
 		href=esc(commit['html_url']),
-		commit_message=esc(trunc(commit['commit_message'])),
+		commit_message=esc(trunc(commit['commit_message'], length=50)),
+		sha=esc(trunc(commit['sha'], length=6, end='')),
+		author=esc(commit['commit_author_name']),
 		html_title=esc(commit['commit_message'])
 	)
 	return mark_safe(commit_html)
