@@ -66,7 +66,7 @@ $(document).ready(function() {
 		datasetStrokeWidth : 4,
 		maintainAspectRatio: false,
 		responsive: true,
-		bezierCurveTension : 0.2
+		bezierCurveTension : 0.1
 	}
 	var overall_ctx = $overall_canvas.get(0).getContext("2d");
 	new Chart(overall_ctx).Line(overall_data, overall_options);
