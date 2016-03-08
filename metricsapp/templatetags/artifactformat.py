@@ -54,11 +54,12 @@ def _format_user(user, esc):
 	"""Format a Github user object for display.
 	esc : escape function
 	"""
-	user_link = '<a href="{href}" target="_blank" title="Github ID:{html_title}">{login}</a>'
+	user_link = '<a href="{href}" target="_blank" title="Github ID:{html_title}"><img style="height: 30px; border-radius: 15px;" src="{avatar_url}"> {login}</a>'
 	user_html = user_link.format(
 		href=esc(user['html_url']),
 		html_title=esc(user['id']),
-		login=esc(user['login'])
+		login=esc(user['login']),
+		avatar_url=esc(user['avatar_url'])
 	)
 	return mark_safe(user_html)
 
