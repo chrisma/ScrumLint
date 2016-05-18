@@ -5,6 +5,10 @@ ScrumLint is a "linter" for agile processes. It aims at supporting a development
 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.45319.svg)](http://dx.doi.org/10.5281/zenodo.45319)
 
 ## Setup
+* This repository assumes you have a [Neo4J](neo4j.com) database filled with collected development data.
+  
+  We used the [DataRover](https://bitbucket.org/tkowark/data-rover) project by [@tkowark](https://github.com/tkowark). 
+
 * Install the dependencies (preferably in a [virtualenv](https://pypi.python.org/pypi/virtualenv/))
 
   `pip install -r requirements.txt`
@@ -12,6 +16,10 @@ ScrumLint is a "linter" for agile processes. It aims at supporting a development
 * Create the necessary database tables (incl. superuser)
 
   `python manage.py syncdb`
+  
+* Adapt the metrics (especially the database queries) to your database scheme or create your own ones
+
+  `metricsapp/scripts/seed.py`
 
 * Load in seed data
 
